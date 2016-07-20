@@ -1,0 +1,405 @@
+
+
+ReflectionException: Method suite does not exist in phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Runner/BaseTestRunner.php on line 76
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1194    8510664   4. PHPUnit_Runner_BaseTestRunner->getTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:133
+    0.1221    8591248   5. ReflectionClass->getMethod() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Runner/BaseTestRunner.php:76
+
+Dump $_SERVER
+   $_SERVER['SCRIPT_FILENAME'] = 'phpunit.phar'
+Dump $_GET
+Dump $_FILES
+PHPUnit 5.3.3 by Sebastian Bergmann and contributors.
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\Rainbow\app\models\BaseObject.php on line 18
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1813    8614208   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1813    8615128   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1814    8616720   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.2948    8792400   9. PHPUnit_Framework_TestCase->onNotSuccessfulTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:953
+
+E
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\Rainbow\app\models\BaseObject.php on line 18
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1813    8614208   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1813    8615128   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1814    8616720   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.1824    8650256   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+    0.1825    8650768  10. ReflectionMethod->invokeArgs() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.1825    8650808  11. MilestoneTest->testCreateAndDelete() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.1834    8767880  12. Phalcon\Mvc\Model->__construct() D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:12
+    0.1835    8768896  13. Phalcon\Mvc\Model\Manager->initialize() D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:12
+    0.1835    8769192  14. Pem\Models\Milestone->initialize() D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:0
+    0.1835    8771144  15. Rainbow\Models\BaseObject->initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:47
+    0.1835    8771776  16. Phalcon\Mvc\Model->skipAttributesOnCreate() D:\www\sites\Rainbow\app\models\BaseObject.php:18
+    0.1836    8772248  17. Phalcon\Mvc\Model\MetaData->setAutomaticCreateAttributes() D:\www\sites\Rainbow\app\models\BaseObject.php:18
+    0.1836    8772352  18. Phalcon\Mvc\Model\MetaData->writeMetaDataIndex() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8772608  19. Phalcon\Mvc\Model\MetaData->_initialize() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8772872  20. Phalcon\Mvc\Model\MetaData\Strategy\Introspection->getMetaData() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8772992  21. Phalcon\Mvc\Model->getReadConnection() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773032  22. Phalcon\Mvc\Model\Manager->getReadConnection() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773064  23. Phalcon\Mvc\Model\Manager->_getConnection() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773224  24. Phalcon\Di->getShared() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773280  25. Phalcon\Di->get() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773344  26. Phalcon\Di\Service->resolve() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773432  27. Closure::bind() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+    0.1836    8773880  28. PHPUnit_Util_ErrorHandler::handleError() D:\www\sites\Rainbow\app\models\BaseObject.php:0
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\Rainbow\app\models\BaseObject.php on line 18
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1813    8614208   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1813    8615128   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1814    8616720   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.1824    8650256   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+
+.
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3322    8793688   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3322    8793656   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3323    8794400   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.4698    8933656   9. PHPUnit_Framework_TestCase->onNotSuccessfulTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:953
+
+E
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3322    8793688   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3322    8793656   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3323    8794400   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.3330    8826568   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+    0.3330    8827048  10. ReflectionMethod->invokeArgs() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.3330    8827224  11. MilestoneTest->testCalculation1() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.3331    8828760  12. Pem\Models\Milestone->calculate() D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:46
+    0.3331    8828824  13. Pem\Models\Milestone->getKrp() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:240
+    0.3331    8829064  14. Phalcon\Mvc\Model->__get() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:108
+    0.3331    8829832  15. Phalcon\Mvc\Model\Manager->getRelationRecords() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.3332    8831080  16. Phalcon\Mvc\Model\Manager->load() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.3339    8915896  17. Phalcon\Mvc\Model->__construct() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.3339    8915960  18. Phalcon\Mvc\Model\Manager->initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.3339    8916176  19. Pem\Models\Task->initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.3339    8919728  20. Phalcon\Mvc\Model->skipAttributesOnCreate() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+    0.3339    8920008  21. Phalcon\Mvc\Model\MetaData->setAutomaticCreateAttributes() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+    0.3339    8920112  22. Phalcon\Mvc\Model\MetaData->writeMetaDataIndex() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3339    8920352  23. Phalcon\Mvc\Model\MetaData->_initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920576  24. Phalcon\Mvc\Model\MetaData\Strategy\Introspection->getMetaData() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920696  25. Phalcon\Mvc\Model->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920736  26. Phalcon\Mvc\Model\Manager->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920768  27. Phalcon\Mvc\Model\Manager->_getConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920928  28. Phalcon\Di->getShared() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8920984  29. Phalcon\Di->get() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8921048  30. Phalcon\Di\Service->resolve() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8921136  31. Closure::bind() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.3340    8921528  32. PHPUnit_Util_ErrorHandler::handleError() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3322    8793688   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3322    8793656   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3323    8794400   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.3330    8826568   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php on line 108
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.5079    8932984   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.5079    8932952   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.5080    8933696   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.6530    8992496   9. PHPUnit_Framework_TestCase->onNotSuccessfulTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:953
+
+E                                                                4 / 4 (100%)
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php on line 108
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.5079    8932984   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.5079    8932952   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.5080    8933696   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.5088    8965864   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+    0.5089    8966344  10. ReflectionMethod->invokeArgs() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.5089    8966528  11. MilestoneTest->testCalculation2() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.5089    8967656  12. Pem\Models\Milestone->calculate() D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:66
+    0.5090    8967688  13. Pem\Models\Milestone->getKrp() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:240
+    0.5090    8967928  14. Phalcon\Mvc\Model->__get() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:108
+    0.5090    8968696  15. Phalcon\Mvc\Model\Manager->getRelationRecords() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5090    8971784  16. Phalcon\Mvc\Model->findFirst() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5091    8973936  17. Phalcon\Mvc\Model\Query->execute() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5092    8973992  18. Phalcon\Mvc\Model\Query->parse() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5092    8977240  19. Phalcon\Mvc\Model\Query->_prepareSelect() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5092    8981784  20. Phalcon\Mvc\Model\Query->_getExpression() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5092    8981912  21. Phalcon\Mvc\Model\Query->_getExpression() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8982040  22. Phalcon\Mvc\Model\Query->_getQualified() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8982136  23. Phalcon\Mvc\Model\MetaData->hasAttribute() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8982616  24. Phalcon\Mvc\Model\MetaData->readMetaData() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8982856  25. Phalcon\Mvc\Model\MetaData->_initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983080  26. Phalcon\Mvc\Model\MetaData\Strategy\Introspection->getMetaData() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983200  27. Phalcon\Mvc\Model->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983240  28. Phalcon\Mvc\Model\Manager->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983272  29. Phalcon\Mvc\Model\Manager->_getConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983432  30. Phalcon\Di->getShared() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983488  31. Phalcon\Di->get() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983552  32. Phalcon\Di\Service->resolve() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8983640  33. Closure::bind() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+    0.5093    8984040  34. PHPUnit_Util_ErrorHandler::handleError() D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:0
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php on line 108
+
+Call Stack:
+    0.0137     455320   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.1011    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.1011    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1459    8603048   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1723    8611376   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.5079    8932984   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.5079    8932952   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.5080    8933696   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.5088    8965864   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+
+
+
+Time: 690 ms, Memory: 8.75Mb
+
+There were 3 errors:
+
+1) MilestoneTest::testCreateAndDelete
+Cannot bind an instance to a static closure
+
+D:\www\sites\Rainbow\app\models\BaseObject.php:18
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:47
+D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:12
+
+2) MilestoneTest::testCalculation1
+Cannot bind an instance to a static closure
+
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:108
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:240
+D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:46
+
+3) MilestoneTest::testCalculation2
+Cannot bind an instance to a static closure
+
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:108
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Milestone.php:240
+D:\www\sites\calc.dev87.ru\tests\testlist\MilestoneTest.php:66
+
+FAILURES!
+Tests: 4, Assertions: 4, Errors: 3.
+------------------------------------------ 
+
+
+ReflectionException: Method suite does not exist in phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Runner/BaseTestRunner.php on line 76
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1168    8510664   4. PHPUnit_Runner_BaseTestRunner->getTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:133
+    0.1195    8585440   5. ReflectionClass->getMethod() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Runner/BaseTestRunner.php:76
+
+Dump $_SERVER
+   $_SERVER['SCRIPT_FILENAME'] = 'phpunit.phar'
+Dump $_GET
+Dump $_FILES
+PHPUnit 5.3.3 by Sebastian Bergmann and contributors.
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1801    8606296   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1802    8607216   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1803    8608808   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.3112    8794704   9. PHPUnit_Framework_TestCase->onNotSuccessfulTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:953
+
+E
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1801    8606296   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1802    8607216   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1803    8608808   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.1812    8642336   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+    0.1812    8642848  10. ReflectionMethod->invokeArgs() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.1812    8642888  11. TaskTest->testCreateAndDelete() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.1823    8770088  12. Phalcon\Mvc\Model->__construct() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:13
+    0.1823    8771104  13. Phalcon\Mvc\Model\Manager->initialize() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:13
+    0.1823    8771408  14. Pem\Models\Task->initialize() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.1824    8775312  15. Phalcon\Mvc\Model->skipAttributesOnCreate() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+    0.1824    8775848  16. Phalcon\Mvc\Model\MetaData->setAutomaticCreateAttributes() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+    0.1824    8775952  17. Phalcon\Mvc\Model\MetaData->writeMetaDataIndex() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1824    8776192  18. Phalcon\Mvc\Model\MetaData->_initialize() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776440  19. Phalcon\Mvc\Model\MetaData\Strategy\Introspection->getMetaData() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776560  20. Phalcon\Mvc\Model->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776600  21. Phalcon\Mvc\Model\Manager->getReadConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776632  22. Phalcon\Mvc\Model\Manager->_getConnection() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776792  23. Phalcon\Di->getShared() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776848  24. Phalcon\Di->get() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8776912  25. Phalcon\Di\Service->resolve() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8777000  26. Closure::bind() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+    0.1825    8777456  27. PHPUnit_Util_ErrorHandler::handleError() D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:0
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php on line 94
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.1801    8606296   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.1802    8607216   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.1803    8608808   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.1812    8642336   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php on line 26
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3477    8795088   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3477    8795056   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3478    8795800   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.4539    8830232   9. PHPUnit_Framework_TestCase->onNotSuccessfulTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:953
+
+E
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php on line 26
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3477    8795088   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3477    8795056   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3478    8795800   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.3486    8827960   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+    0.3487    8828440  10. ReflectionMethod->invokeArgs() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.3487    8828720  11. TaskTest->testCalculation1() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:985
+    0.3487    8830512  12. Phalcon\Mvc\Model->save() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:26
+    0.3487    8830552  13. Phalcon\Mvc\Model->getWriteConnection() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:26
+    0.3487    8830592  14. Phalcon\Mvc\Model\Manager->getWriteConnection() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3487    8830624  15. Phalcon\Mvc\Model\Manager->_getConnection() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3487    8830784  16. Phalcon\Di->getShared() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3487    8830840  17. Phalcon\Di->get() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3487    8830904  18. Phalcon\Di\Service->resolve() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3487    8830992  19. Closure::bind() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+    0.3488    8831536  20. PHPUnit_Util_ErrorHandler::handleError() D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:0
+
+
+
+PHPUnit_Framework_Error_Warning: Cannot bind an instance to a static closure in D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php on line 26
+
+Call Stack:
+    0.0131     455304   1. {main}() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:0
+    0.0983    8457880   2. PHPUnit_TextUI_Command::main() D:\www\sites\calc.dev87.ru\tests\phpunit.phar:525
+    0.0983    8462600   3. PHPUnit_TextUI_Command->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:110
+    0.1466    8595152   4. PHPUnit_TextUI_TestRunner->doRun() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/Command.php:159
+    0.1713    8603472   5. PHPUnit_Framework_TestSuite->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/TextUI/TestRunner.php:440
+    0.3477    8795088   6. PHPUnit_Framework_TestCase->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestSuite.php:747
+    0.3477    8795056   7. PHPUnit_Framework_TestResult->run() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:801
+    0.3478    8795800   8. PHPUnit_Framework_TestCase->runBare() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestResult.php:685
+    0.3486    8827960   9. PHPUnit_Framework_TestCase->runTest() phar://D:/www/sites/calc.dev87.ru/tests/phpunit.phar/phpunit/Framework/TestCase.php:845
+
+.                                                                 3 / 3 (100%)
+
+Time: 491 ms, Memory: 8.75Mb
+
+There were 2 errors:
+
+1) TaskTest::testCreateAndDelete
+Cannot bind an instance to a static closure
+
+D:\www\sites\calc.dev87.ru\backend\Pem\models\Task.php:94
+D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:13
+
+2) TaskTest::testCalculation1
+Cannot bind an instance to a static closure
+
+D:\www\sites\calc.dev87.ru\tests\testlist\TaskTest.php:26
+
+FAILURES!
+Tests: 3, Assertions: 0, Errors: 2.

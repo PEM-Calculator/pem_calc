@@ -1,0 +1,4 @@
+<h1>Результаты расчетов</h1>
+{% for item in data.output %}
+<h3>{{ item.caption }} = <i>{{ item.value }}</i></h3>
+{% endfor %}
