@@ -59,9 +59,7 @@ class Task extends \Pem\Models\BaseObject
 	}
 
 	public function toArray($columns = NULL) {
-		$periods = $this->getMilestones();
-
-		return $periods;
+		return $this->getItemsArray();
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
