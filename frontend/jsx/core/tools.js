@@ -58,10 +58,10 @@ let Tools = {
 	},
 
 	// Метод считает количество периодов между датами
-	calcPlanCount: function(pn, po, range_type) {
-		//console.log('Fire p==* [TOOLS.calcPlanCount]', pn, po, range_type)
-		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(range_type),
-			day_length = 24*60*60*1000
+	calcPlanCount: function(pn, po, plan_range) {
+		//console.log('Fire p==* [TOOLS.calcPlanCount]', pn, po, plan_range)
+		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(plan_range),
+			day_length = 24*3600*1000
 
 		if(!pn || !po || type === -1 || pn > po)
 			return null
@@ -279,17 +279,6 @@ let Tools = {
 			return this.month_day_count[month-1]
 	},
 
-	// возвращает количество дней, прошедшее с начала года с учетом
-	// високосного года
-	// day = 1..31
-	// month = 1..12
-	getYearDaysForDay(day, month, year) {
-		let count = 0
-		for(let i=1; i<month; i++)
-			count += this.getMonthDays(i, year)
-		return count + day
-	},
-
 	// возвращает количество дней в квартале с учетом високосного года
 	// quarter = 1..4
 	getQuarterDays(quarter, year) {
@@ -316,6 +305,17 @@ let Tools = {
 			return 365
 	},
 
+	// возвращает количество дней, прошедшее с начала года с учетом
+	// високосного года
+	// day = 1..31
+	// month = 1..12
+	getYearDaysForDay(day, month, year) {
+		let count = 0
+		for(let i=1; i<month; i++)
+			count += this.getMonthDays(i, year)
+		return count + day
+	},
+
 	padLeft(str, length, char = ' ') {
 		str = str + ''
 		return (str.length >= length) ? str : Array(length - str.length + 1).join(char) + str
@@ -330,8 +330,87 @@ let Tools = {
 	formatNum(num) {
 		return (num + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
 	},
+
+	// формирует значение доли
+	formatShare(num, config) {
+		if(!num)
+			return null
+
+		if(config == 1)
+			return (num * 100).toFixed(1) + '%'
+		else
+			return (num * 1.0).toFixed(3)
+	},
+
+	// парсит значение, вернет число либо null
+	parseIntOrNull(value) {
+		let parsed = parseInt(value)
+		return (isNaN(parsed) ? null : parsed)
+	},
+
+	// парсит значение, вернет число либо null
+	parseFloatOrNull(value) {
+		let parsed = parseFloat(value)
+		return (isNaN(parsed) ? null : parsed)
+	},
+
+	// определяет финальную дату по периоду
+	getFinishOfPeriod(date_from, plan_range) {
+		//console.log('Fire p==* [TOOLS.getFinishOfPeriod]', date_from, plan_range)
+		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(plan_range),
+			day_length = 24*60*60*1000
+
+		// получаю количество дней без секунд
+		date_from = Math.floor(date_from / day_length)
+
+		let date_ = new Date(date_from * day_length),
+			date = this.parseDate(date_),
+			add = 0
+
+		switch(type) {
+			case 0: // day
+				return date_from * day_length
+				break
+
+			case 1: // week
+				add = (7 - date.week_day)
+				return (date_from + add) * day_length
+				break
+
+			case 2: // month
+				add = (this.getMonthDays(date.month, date.year) - date.day)
+				return (date_from + add) * day_length
+				break
+
+			case 3: // quarter
+				let last_day_in_quarter = 0
+				for(let i = 1; i <= date.quarter_number; i++) {
+					last_day_in_quarter += this.getQuarterDays(i, date.year)
+				}
+				add = (last_day_in_quarter - date.year_day)
+				return (date_from + add) * day_length
+				break
+
+			case 4: // half-year
+				let last_day_in_halfyear = 0
+				for(let i = 1; i <= date.half_year_number; i++) {
+					last_day_in_halfyear += this.getHalfyearDays(i, date.year)
+				}
+				add = (last_day_in_halfyear - date.year_day)
+				return (date_from + add) * day_length
+				break
+
+			case 5: // year
+				add = (this.getYearDays(date.year) - date.year_day)
+				return (date_from + add) * day_length
+				break
+		}
+
+		return false
+	},
 }
 
+window.Tools = Tools
 module.exports = Tools
 
 /*

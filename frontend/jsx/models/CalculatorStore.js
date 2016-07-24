@@ -193,9 +193,9 @@ let CalculatorStore = Reflux.createStore({
 					periods: _.map(this.data.periods, (period) => {
 						return {
 							pd: period.pd.value,
+							fd: period.pd.value,
 							kprp: period.kpr.value,
 							prpz: period.prpz.value,
-							fd: period.fd.value,
 							kprf: period.kpr_fact.value,
 							frfz: period.frfz.value,
 						}
@@ -235,118 +235,8 @@ let CalculatorStore = Reflux.createStore({
 	},
 
 	setResults(taskResults) {
-		let planfact = {
-			kpr: {
-				value: taskResults.skprp * 1.0,
-				title: 'Ключевой показатель результата',
-				placeholder: 'КПРплн',
-			},
-			prpz: {
-				value: taskResults.sprpz * 1.0,
-				title: 'Плановые расходы плановой задачи',
-				placeholder: 'ПРПЗ',
-			},
-			pd: {
-				value: taskResults.spd * 1.0,
-				title: 'Плановая длительность',
-				placeholder: 'ПД',
-			},
-			kpr_fact: {
-				value: taskResults.skprf * 1.0,
-				title: 'Фактический результат',
-				placeholder: 'КПРфкт',
-			},
-			frfz: {
-				value: taskResults.sfrfz * 1.0,
-				title: 'Фактические расходы фактической задачи',
-				placeholder: 'ФРФЗ',
-			},
-			fd: {
-				value: taskResults.sfd * 1.0,
-				title: 'Фактическая длительность',
-				placeholder: 'ФД',
-			},
-			prfz: {
-				value: taskResults.sprfz * 1.0,
-				title: 'Плановые расходы фактической задачи',
-				placeholder: 'ПРФЗ',
-			},
-		}
-
-		let efficiency = {
-			kd:  {
-				value: taskResults.skd * 1.0,
-				title: 'Коэффициент длительности',
-				placeholder: 'Кд',
-			},
-			ks:  {
-				value: taskResults.sks * 1.0,
-				title: 'Коэффициент эффективности по сроку',
-				placeholder: 'Кс',
-			},
-			kr:  {
-				value: taskResults.skr * 1.0,
-				title: 'Коэффициент эффективности по расходу',
-				placeholder: 'Кр',
-			},
-			eff:  {
-				value: taskResults.seff * 1.0,
-				title: 'Комплексная эффективность',
-				placeholder: 'Э',
-			},
-		}
-
-		let deviations = {
-			fd: {
-				absolute_value: taskResults.dafd * 1.0,
-				relative_value: taskResults.drfd * 1.0,
-				title: 'Отклонение по сроку',
-				placeholder: 'ФДоткл',
-			},
-			frfz: {
-				absolute_value: taskResults.dafrfz * 1.0,
-				relative_value: taskResults.drfrfz * 1.0,
-				title: 'Отклонение по расходу',
-				placeholder: 'ФРФЗоткл',
-			},
-			kpr: {
-				absolute_value: taskResults.dakpr * 1.0,
-				relative_value: taskResults.drkpr * 1.0,
-				title: 'Отклонение по результату',
-				placeholder: 'КПРоткл',
-			},
-		}
-
-		let forecasts = {
-			fd: {
-				value: taskResults.ffd * 1.0,
-				title: 'Прогноз фактической длительности',
-				placeholder: 'ФДпргн',
-			},
-			frfz: {
-				value: taskResults.ffrfz * 1.0,
-				title: 'Прогноз фактического расхода фактической задачи',
-				placeholder: 'ФРФЗпргн',
-			},
-			pr: {
-				value: taskResults.fpr * 1.0,
-				title: 'Прогноз прибыли по расходу',
-				placeholder: 'ПР(Кр)пргн',
-			},
-			pre: {
-				value: taskResults.fpre * 1.0,
-				title: 'Прогноз прибыли по эффективности',
-				placeholder: 'ПР(Э)пргн',
-			},
-		}
-
-		this.data.results = {
-			planfact: planfact,
-			efficiency: efficiency,
-			deviations: deviations,
-			forecasts: forecasts,
-			periods: taskResults.items
-		}
+		console.log('Fire p==* [STORE.setResults]', taskResults)
+		this.data.results = taskResults
 	},
 
 	// Нужно обновить первую страницу настроек
@@ -363,8 +253,8 @@ let CalculatorStore = Reflux.createStore({
 	},
 
 	// Нужно добавить новый период
-	onAddNewPeriod() {
-		this.addNewPeriod()
+	onAddNewPeriod(pn, po, kpr, prpz, kpr_fact, frfz) {
+		this.addNewPeriod(pn, po, kpr, prpz, kpr_fact, frfz)
 		this.trigger(this.data)
 	},
 
@@ -437,8 +327,6 @@ let CalculatorStore = Reflux.createStore({
 			// сохраняю
 			localStorage.setItem(this.localStorageKey, JSON.stringify(this.data))
 		}
-
-		this.trigger(this.data)
 	},
 
 	// Загрузка данных из хранилищ либо сервера
@@ -453,7 +341,7 @@ let CalculatorStore = Reflux.createStore({
 		xhr.send()*/
 		let data = localStorage.getItem(this.localStorageKey)
 
-		if(data != null) {
+		if(data !== null) {
 			this.data = JSON.parse(data)
 			this.updateLinksToUnits()
 		}
@@ -665,29 +553,10 @@ let CalculatorStore = Reflux.createStore({
 					{title: 'В процентах', value: 'percent'},
 				],
 			},
-			fd: {
-				type: 'number',
-				title: 'Фактическая длительность',
-				placeholder: 'ФД',
-			},
 			autor_name: {
 				title: 'Автор задачи',
 				placeholder: 'Создатель задачи'
 			},
-			// method: {
-			// 	title: 'Метод распределения плановых значений результата и расходов по длительности',
-			// 	range: [
-			// 		{title: 'Ручное', value: 'manual'},
-			// 		{title: 'Равномерно', value: 'evenly'},
-			// 	],
-			// },
-			// efficiency_measuring: {
-			// 	title: 'Измерение уровня эффективности',
-			// 	range: [
-			// 		{title: 'В долях', value: 'share'},
-			// 		{title: 'В процентах', value: 'percent'},
-			// 	],
-			// },
 		}
 
 		// данные по периодам
@@ -714,11 +583,10 @@ let CalculatorStore = Reflux.createStore({
 	},
 
 	// Добавление нового пустого периода
-	addNewPeriod(pn, po, kpr, prpz, fd, kpr_fact, frfz) {
+	addNewPeriod(pn, po, kpr, prpz, kpr_fact, frfz) {
 		console.log('Fire p==* [STORE.AddNewPeriod]', [pn, po, kpr, prpz])
 		kpr = (parseInt(kpr) || 0) * 1.0
 		prpz = (parseInt(prpz) || 0) * 1.0
-		fd = (parseInt(fd) || 0) * 1
 		kpr_fact = (parseInt(kpr_fact) || 0) * 1.0
 		frfz = (parseInt(frfz) || 0) * 1.0
 		// расчеты
@@ -732,13 +600,13 @@ let CalculatorStore = Reflux.createStore({
 				type: 'date',
 				title: 'Плановая дата начала',
 				placeholder: 'гггг-мм-чч',
-				value: pn || null,
+				value: pn,
 			},
 			po: {
 				type: 'date',
 				title: 'Плановая дата окончания',
 				placeholder: 'гггг-мм-чч',
-				value: po || null,
+				value: po,
 			},
 			pd: {
 				type: 'number',
@@ -755,24 +623,6 @@ let CalculatorStore = Reflux.createStore({
 				type: 'number',
 				title: 'Бюджет (Плановые расходы плановой задачи)',
 				value: prpz || null,
-			},
-			/*
-			fn: {
-				type: 'date',
-				title: 'Фактическая дата начала',
-				placeholder: 'гггг-мм-чч',
-			},
-			fo: {
-				type: 'date',
-				title: 'Фактическая дата окончания',
-				placeholder: 'гггг-мм-чч'
-			},
-			*/
-			fd: {
-				type: 'number',
-				title: 'Фактическая длительность',
-				readonly: false,
-				value: fd || null,
 			},
 			kpr_fact: {
 				type: 'number',

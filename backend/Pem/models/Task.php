@@ -5,7 +5,7 @@ namespace Pem\Models;
 #use \Phalcon\Mvc\Model;
 use \Phalcon\Mvc\Model\Relation;
 
-class Task extends \Rainbow\Models\BaseObject
+class Task extends \Pem\Models\BaseObject
 {
 	const
 		DATE_UNIT_DAY		= 'day',
@@ -23,47 +23,9 @@ class Task extends \Rainbow\Models\BaseObject
 			self::DATE_UNIT_YEAR	=> 'ежегодно',
 		];
 
-	private
+	public
 		// ссылки
-		$calculation_id,
-
-		// Целевые показатели
-		$kpr,			#	1.	DOUBLE 		NOT NULL
-		$prpz,			#	2.	DOUBLE 		NOT NULL
-		$ppr,			#	3.	DOUBLE 		NULL
-		$krp,			#	4.	DOUBLE 		NOT NULL
-		$pd,			#	5.	DOUBLE		NOT NULL
-
-		// Накопительные показатели
-		$sum_kpr_plan,
-		$sum_prpz,
-		$sum_pd,
-		$sum_kpr_fact,
-		$sum_frfz,
-		$sum_fd,
-
-		// Накопительные расчетные показатели
-		$sum_prfz,
-		$sum_kd,
-		$sum_ks,
-		$sum_kr,
-		$sum_eff,
-
-		// Прогнозные показатели (forecast)
-		$frc_fd,
-		$frc_frfz,
-		$frc_pr,
-		$frc_pre,
-
-		// Показатели отклонения по накопительным (deviation)
-		// Абсолютные (absolute)
-		$deva_fd,
-		$deva_frfz,
-		$deva_kpr,
-		// Относительные (relative)
-		$devr_fd,
-		$devr_frfz,
-		$devr_kpr;
+		$calculation_id;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
@@ -97,68 +59,9 @@ class Task extends \Rainbow\Models\BaseObject
 	}
 
 	public function toArray($columns = NULL) {
-		$result = [
-			// целевые показатели
-			'kpr'		=> $this->getKpr(),
-			'prpz'	=> $this->getPrpz(),
-			'ppr'		=> $this->getPpr(),
-			'krp'		=> $this->getKrp(),
-			'pd'		=> $this->getPd(),
-		];
-
 		$periods = $this->getMilestones();
 
-		if(count($periods)) {
-			$lp = $periods[count($periods)-1];
-			// показатели последнего периода
-			$result += [
-				'prfz'	=> $lp->getPrfz(),
-				'kd'		=> $lp->getKd(),
-				'ks'		=> $lp->getKs(),
-				'kr'		=> $lp->getKr(),
-				'eff'		=> $lp->getEff(),
-			];
-			// суммарные показатели по периодам
-			$result += [
-				'skprp'	=> $this->sum_kpr_plan,
-				'sprpz'	=> $this->sum_prpz,
-				'spd'		=> $this->sum_pd,
-				'skprf'	=> $this->sum_kpr_fact,
-				'sfrfz'	=> $this->sum_frfz,
-				'sfd'		=> $this->sum_fd,
-				'sprfz'	=> $this->sum_prfz,
-				'skd'		=> $this->sum_kd,
-				'sks'		=> $this->sum_ks,
-				'skr'		=> $this->sum_kr,
-				'seff'	=> $this->sum_eff,
-			];
-		}
-
-		// прогнозы
-		$result += [
-			'ffd'		=> $this->frc_fd,
-			'ffrfz'	=> $this->frc_frfz,
-			'fpr'		=> $this->frc_pr,
-			'fpre'	=> $this->frc_pre,
-		];
-
-		if(count($periods)) {
-			// погрешности по последнему периоду
-			$result += [
-				'dafd'	=> $this->deva_fd,
-				'dafrfz'	=> $this->deva_frfz,
-				'dakpr'	=> $this->deva_kpr,
-				'drfd'	=> $this->devr_fd,
-				'drfrfz'	=> $this->devr_frfz,
-				'drkpr'	=> $this->devr_kpr,
-			];
-
-			$result += [
-				'items'	=> $this->getItemsArray(),
-			];
-		}
-
-		return $result;
+		return $periods;
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -189,53 +92,11 @@ class Task extends \Rainbow\Models\BaseObject
 		return $result;
 	}
 
-	// Целевые показатели
-
-	public function getKpr() { return $this->kpr; }
-	public function getPrpz() { return $this->prpz; }
-	public function getPpr() { return $this->ppr; }
-	public function getKrp() { return $this->krp; }
-	public function getPd() { return $this->pd; }
-
-	// Накопительные
-	/*
-	public function getSumPrpz() { return $this->sum_prpz; }
-	public function getSumPrfz() { return $this->sum_prfz; }
-	public function getSumFrfz() { return $this->sum_frfz; }
-	public function getSumPd() { return $this->sum_pd; }
-	public function getSumFd() { return $this->sum_fd; }
-
-	// Расчетные накопительные
-
-	public function getKd() { return $this->kd; }
-	public function getKs() { return $this->ks; }
-	public function getKr() { return $this->kr; }
-	public function getEff() { return $this->eff; }
-
-	// Прогнозы
-
-	public function getForecastFd() { return $this->forecast_fd; }
-	public function getForecastFrfz() { return $this->forecast_frfz; }
-	public function getForecastFpr() { return $this->forecast_fpr; }
-	*/
-
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 	//		Setters
 	//
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	public function set($data) {
-		$this
-			->setKpr($data->kpr)
-			->setPrpz($data->prpz)
-			->setPpr($data->ppr)
-			->setPd($data->pd);
-
-		$this->calculate();
-
-		return $this;
-	}
 
 	// Устанавливает родителя
 	// Можно передать как объект Calculation так и id
@@ -293,23 +154,8 @@ class Task extends \Rainbow\Models\BaseObject
 	 * Вернет true или int в случае ошибки
 	 */
 	public function calculate() {
-		// КРП
-		$this->krp = (!$this->ppr)
-			? 1.0
-			: $this->prpz / $this->ppr;
-
-		return true;
-	}
-
-	/**
-	 * Вызываю calculate для кт
-	 */
-	public function calculateItems() {
-		foreach($this->getMilestones() as $ms) {
-			$result = $ms->calculate();
-			$ms->save();
-			if($result !== true) return $result;
-		}
+		$result = $this->calculateItems();
+		if($result !== true) return $result;
 
 		return true;
 	}
@@ -317,78 +163,75 @@ class Task extends \Rainbow\Models\BaseObject
 	/**
 	 * Обновляю нарастающие показатели
 	 */
-	public function calculateSummaries() {
-		$kpr_plan = 0.0;
-		$prpz = 0.0;
-		$pd = 0.0;
-		$kpr_fact = 0.0;
-		$frfz = 0.0;
-		$fd = 0.0;
-		$prfz = 0.0;
+	public function calculateItems() {
+		$E_kpr_plan = 0.0;
+		$E_prpz = 0.0;
+		$E_pd = 0.0;
+		$E_kpr_fact = 0.0;
+		$E_frfz = 0.0;
+		$E_fd = 0.0;
+		$E_prfz = 0.0;
 
+		// по каждой КТ суммирую и считаю
 		foreach($this->getMilestones() as $ms) {
-			$kpr_plan += $ms->getKprPlan();
-			$prpz += $ms->getPrpz();
-			$pd += $ms->getPd();
-			$kpr_fact += $ms->getKprFact();
-			$frfz += $ms->getFrfz();
-			$fd += $ms->getFd();
-			$prfz += $ms->getPrfz();
+			$result = $ms->calculate();
+			if($result !== true) return $result;
+
+			$E_kpr_plan += $ms->kpr_plan;
+			$E_prpz += $ms->prpz;
+			$E_pd += $ms->pd;
+			$E_kpr_fact += $ms->kpr_fact;
+			$E_frfz += $ms->frfz;
+			$E_fd += $ms->fd;
+			$E_prfz += $ms->prfz;
+
+			// расчет промежуточных итогов для каждой вехи
+			if(!$E_fd) {
+				$kd = null;
+			}
+			else {
+				$kd = ($E_pd > $E_fd) ? 1.0 : $E_pd / $E_fd;
+			}
+
+			$ks = (!$E_prpz) ? null : ($E_prfz / $E_prpz * $kd);
+			$kr = (!$E_prfz) ? null : (1 + (1 - $E_frfz / $E_prfz) * $ms->krp);
+			$eff = (is_null($ks) || is_null($kr)) ? null : ($ks * $kr);
+
+			// запоминаю суммарные
+			$ms->sum_kpr_plan = $E_kpr_plan;
+			$ms->sum_prpz = $E_prpz;
+			$ms->sum_pd = $E_pd;
+			$ms->sum_kpr_fact = $E_kpr_fact;
+			$ms->sum_frfz = $E_frfz;
+			$ms->sum_fd = $E_fd;
+
+			//
+			$ms->sum_prfz = $E_prfz;
+			$ms->sum_kd = $kd;
+			$ms->sum_ks = $ks;
+			$ms->sum_kr = $kr;
+			$ms->sum_eff = $eff;
+
+			// прогнозные показатели (forecast)
+			$ms->frc_fd = ($ks ? $ms->pd / $ks : 0.0);
+			$ms->frc_frfz = $ms->prpz * (1 - ($kr - 1) / $ms->krp);
+			$ms->frc_pr = $ms->ppr * $kr;
+			$ms->frc_pre = $ms->ppr * $eff;
+
+			// показатели отклонения по накопительным (deviation)
+			// абсолютные (absolute)
+			$ms->deva_fd = ($ms->pd > $ms->sum_fd ? 0.0 : $ms->pd - $ms->sum_fd);
+			$ms->deva_frfz = $ms->prpz - $ms->sum_frfz;
+			$ms->deva_kpr = $ms->kpr_plan - $ms->sum_kpr_fact;
+
+			// относительные (relative)
+			$ms->devr_fd = $ms->deva_fd / $ms->pd;
+			$ms->devr_frfz = $ms->deva_frfz / $ms->prpz;
+			$ms->devr_kpr = $ms->deva_kpr / $ms->kpr_plan;
+
+			// сохраняю КТ
+			$ms->save();
 		}
-
-		if(!$fd)
-			$kd = null;
-		else
-			$kd = ($pd > $fd) ? 1.0 : $pd / $fd;
-
-		$ks = (!$prpz) ? null : ($prfz / $prpz * $kd);
-		$kr = (!$prfz) ? null : (1 + (1 - $frfz / $prfz) * $this->krp);
-		$eff = (is_null($ks) || is_null($kr)) ? null : ($ks * $kr);
-
-		// Накопительные показатели
-		$this->sum_kpr_plan = $kpr_plan;
-		$this->sum_prpz = $prpz;
-		$this->sum_pd = $pd;
-		$this->sum_kpr_fact = $kpr_fact;
-		$this->sum_frfz = $frfz;
-		$this->sum_fd = $fd;
-
-		// Накопительные расчетные показатели
-		$this->sum_prfz = $prfz;
-		$this->sum_kd = $kd;
-		$this->sum_ks = $ks;
-		$this->sum_kr = $kr;
-		$this->sum_eff = $eff;
-
-		// Прогнозные показатели (forecast)
-		$this->frc_fd = ($this->sum_ks ? $this->pd / $this->sum_ks : 0.0);
-		$this->frc_frfz = $this->prpz * (1 - ($this->sum_kr - 1) / $this->krp);
-		$this->frc_pr = $this->ppr * $this->sum_kr;
-		$this->frc_pre = $this->ppr * $this->sum_eff;
-
-		// Показатели отклонения по накопительным (deviation)
-		// Абсолютные (absolute)
-		$this->deva_fd = ($this->pd > $this->sum_fd ? 0.0 : $this->pd - $this->sum_fd);
-		$this->deva_frfz = $this->prpz - $this->sum_frfz;
-		$this->deva_kpr = $this->kpr - $this->sum_kpr_fact;
-		// Относительные (relative)
-		$this->devr_fd = $this->deva_fd / $this->pd;
-		$this->devr_frfz = $this->deva_frfz / $this->prpz;
-		$this->devr_kpr = $this->deva_kpr / $this->kpr;
-
-		return true;
-	}
-
-	// Выполняю полный пересчет данных для задачи
-	public function calculateAll() {
-		$result = $this->calculate();
-		if($result !== true) return $result;
-
-		$result = $this->calculateItems();
-		if($result !== true) return $result;
-
-		$result = $this->calculateSummaries();
-		if($result !== true) return $result;
 
 		return true;
 	}

@@ -7,13 +7,20 @@
 </head>
 <body>
 	<header>
+		<div class="blue-header">
+			<div class="container">
+				<h3>
+					Монитор эффективности деятельности
+				</h3>
+			</div>
+		</div>
 		<div class="container">
-			<h1>Строительство моста через Каму</h1>
+			<h1 id="header"></h1>
 		</div>
 		<nav class="container" id="mainmenu">
-			<a class="btn btn-default" href="/">Монитор</a>
-			<a class="btn btn-default" href="/planfact">План и факт</a>
-			<a class="btn btn-default" href="/settings">Настройки</a>
+			<a href="/">Монитор</a>
+			<a href="/planfact">План и факт</a>
+			<a href="/settings">Настройки</a>
 		</nav>
 	</header>
 
@@ -30,9 +37,9 @@
 		&copy; Все права защищены. Автор прототипа Зуев Григорий. e-mail: g.zuev@mail.ru
 	</footer>
 
-	<script src="/scripts/app.js?v=2"></script>
 	<script src="/scripts/jquery-2.1.4.min.js"></script>
 	<script src="/scripts/bootstrap.min.js"></script>
-	<!--<script src="/scripts/main.js?v=2"></script>-->
+	<script src="/scripts/main.js?v=2"></script>
+	<script src="/scripts/app.js?v=2"></script>
 </body>
 </html>

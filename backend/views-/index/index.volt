@@ -1,1 +1,0 @@
-<a href="/projects">Проекты</a>

@@ -1,5 +1,5 @@
 <?php
-defined('LOAD_ACCESS') || die('Access denied'); 
+defined('LOAD_ACCESS') || die('Access denied');
 
 /**
  *  calc.php
@@ -26,7 +26,7 @@ if(isset($config->const))
 	}
 
 # Запуск приложения
-require_once __APP__ . 'Rainbow/app/.auto_config.php';
+require_once __APP__ . '.auto_config.php';
 
 #
 #	Метод регистрирует константу с проверкой существования каталога

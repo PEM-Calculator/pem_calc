@@ -1,4 +1,5 @@
 <?php
+
 namespace Pem\Models;
 
 use \Phalcon\Mvc\Model;
@@ -6,7 +7,7 @@ use \Phalcon\Mvc\Model\Relation;
 use \Phalcon\Mvc\Model\Transaction\Failed as TxFailed;
 use \Phalcon\Mvc\Model\Transaction\Manager as TxManager;
 
-class Calculation extends \Rainbow\Models\BaseObject
+class Calculation extends \Pem\Models\BaseObject
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
@@ -73,7 +74,7 @@ class Calculation extends \Rainbow\Models\BaseObject
 	// Updating
 	public function beforeValidationOnUpdate() {
 		foreach($this->getTasks() as $task) {
-			$task->calculateAll();
+			$task->calculate();
 			$task->save();
 		}
 	}
@@ -161,11 +162,8 @@ class Calculation extends \Rainbow\Models\BaseObject
 				return 1002;
 			}
 
-			// создаю задачу
+			// создаю задачу, полчаю id
 			$task = $calc->addItem();
-			$task->set($taskData->goal);
-
-			// надо получить id
 			$task->create();
 
 			// показатели по периодам

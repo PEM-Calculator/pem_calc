@@ -40,6 +40,9 @@ var
 const
 	isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'
 
+// чтобы React не ругался в консоли на дев-версию
+process.env.NODE_ENV = 'production'
+
 // переменные
 var
 	$src_path = path.resolve('.'),			// откуда берем исходники

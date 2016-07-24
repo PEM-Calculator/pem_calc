@@ -1,6 +1,7 @@
 'use strict'
 // загружаю модули
 import _ from 'lodash'
+import { render } from 'react-dom'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Reflux from 'reflux'
@@ -8,6 +9,7 @@ import Reflux from 'reflux'
 import history from './../../core/history'
 import Tools from './../../core/tools'
 import CalculatorStore from './../../models/CalculatorStore'
+import { Router, Route, IndexRoute, Redirect, Link, IndexLink } from 'react-router'
 
 //	-------------------------------------
 //		class Input1
@@ -31,7 +33,7 @@ let Input1 = React.createClass({
 
 	// метод обновления переменной
 	updateValueFromProps(data) {
-		console.log('Fire p==* [Input1.updateValueFromProps]', data)
+		//console.log('Fire p==* [Input1.updateValueFromProps]', data)
 		this.setValue(data.value || null)
 	},
 
@@ -40,7 +42,7 @@ let Input1 = React.createClass({
 	},
 
 	componentDidMount() {
-		console.log('Fire p==* [Input1.componentDidMount]', this.props, this.value)
+		//console.log('Fire p==* [Input1.componentDidMount]', this.props, this.value)
 		this.updateCheckState()
 	},
 
@@ -58,7 +60,7 @@ let Input1 = React.createClass({
 
 	// Событие при изменении значения поля ввода
 	onPreChange(event) {
-		console.log('Fire p==* [Input1.onPreChange]')
+		//console.log('Fire p==* [Input1.onPreChange]')
 
 		switch(this.data.type) {
 			case 'date':
@@ -82,12 +84,12 @@ let Input1 = React.createClass({
 
 	// Метод на изменение по умолчанию
 	onChange(event) {
-		console.log('Fire p==* [Input1.onChange]', event)
+		//console.log('Fire p==* [Input1.onChange]', event)
 	},
 
 	// Метод установки нового значения извне
 	setValue(newValue) {
-		console.log('Fire p==* [Input1.setValue] from "%s" to "%s"', this.value, newValue)
+		//console.log('Fire p==* [Input1.setValue] from "%s" to "%s"', this.value, newValue)
 		this.value = newValue
 
 		if(this.refs.input)
@@ -103,7 +105,7 @@ let Input1 = React.createClass({
 	},
 
 	updateCheckState() {
-		console.log('Fire p==* [Input1.updateCheckState]')
+		//console.log('Fire p==* [Input1.updateCheckState]')
 
 		if(this.refs.input)
 			if(this.data.type == 'checkbox')
@@ -129,7 +131,6 @@ let Input1 = React.createClass({
 	},
 
 	render() {
-		console.log('RENDER Input1')
 		return (
 			<div className={'form-group' + (this.data.error ? ' has-error' : '')}>
 
@@ -183,7 +184,7 @@ let Select1 = React.createClass({
 
 	// Метод обновления переменной
 	updateValueFromProps(data) {
-		console.log('Fire p==* [Select1.updateValueFromProps]', data)
+		//console.log('Fire p==* [Select1.updateValueFromProps]', data)
 		// список возможных значений
 		this.range = data.range
 
@@ -194,7 +195,7 @@ let Select1 = React.createClass({
 	onPreChange(event) {
 		event.preventDefault()
 
-		console.log('Fired p==* [Select1.onPreChange]', event, event.target)
+		//console.log('Fired p==* [Select1.onPreChange]', event, event.target)
 		this.setValue(event.target.value)
 
 		if(this.props.onChange)
@@ -210,7 +211,7 @@ let Select1 = React.createClass({
 
 	// Метод установки нового значения извне
 	setValue(newValue) {
-		console.log('Fire p==* [Select1.setValue] from "%s" to "%s"', this.value, newValue)
+		//console.log('Fire p==* [Select1.setValue] from "%s" to "%s"', this.value, newValue)
 
 		// валидация
 		newValue = (parseInt(newValue) || 0)
@@ -287,7 +288,7 @@ let Dropdown1 = React.createClass({
 
 	// Метод обновления переменной
 	updateValueFromProps(props) {
-		console.log('Fire p==* [Dropdown1.updateValueFromProps]', props)
+		//console.log('Fire p==* [Dropdown1.updateValueFromProps]', props)
 		// список возможных значений
 		if(typeof props.data != 'object') {
 			this.setValue(props.data)
@@ -302,7 +303,7 @@ let Dropdown1 = React.createClass({
 
 	// Событие при изменении значения поля ввода
 	onPreChange(event) {
-		console.log('Fired p==* [Dropdown1.onPreChange]')
+		//console.log('Fired p==* [Dropdown1.onPreChange]')
 		this.setValue(event.target.value)
 
 		if(this.props.onChange)
@@ -318,10 +319,10 @@ let Dropdown1 = React.createClass({
 
 	// Метод установки нового значения извне
 	setValue(newValue) {
-		console.log('Fire p==* [Dropdown1.setValue] from "%s" to "%s"', this.value, newValue)
+		//console.log('Fire p==* [Dropdown1.setValue] from "%s" to "%s"', this.value, newValue)
 
 		// валидация
-		console.log('RANGE-Dropdown1', this.range)
+		//console.log('RANGE-Dropdown1', this.range)
 		newValue = (parseInt(newValue) || 0)
 		if(!this.range)
 			newValue = null
@@ -394,7 +395,7 @@ let FormUnitsAndGoals = React.createClass({
 
 	componentDidMount() {
 		console.log('Fire p==* [FormUnitsAndGoals.componentDidMount]', this.state)
-	    this.pprDisabledUpdate()
+	    this.updateDisables()
 	},
 
 	onFormSubmit(event) {
@@ -414,6 +415,7 @@ let FormUnitsAndGoals = React.createClass({
 			// если ошибок нет, перехожу на страницу периодов
 			if(noErrors) {
 				history.push('/planfact')
+				//this.updateDisables()
 			}
 			else {
 				// есть ошибки, надо вывести
@@ -442,7 +444,7 @@ let FormUnitsAndGoals = React.createClass({
 
 		CalculatorStore.Actions.startDemo(() => {
 			// обновляю данные
-			this.pprDisabledUpdate()
+			this.updateDisables()
 		})
 	},
 
@@ -452,7 +454,7 @@ let FormUnitsAndGoals = React.createClass({
 
 		CalculatorStore.Actions.reloadUnitsAndGoals(() => {
 			// обновляю данные
-			this.pprDisabledUpdate()
+			this.updateDisables()
 		})
 	},
 
@@ -462,7 +464,7 @@ let FormUnitsAndGoals = React.createClass({
 
 		CalculatorStore.Actions.resetData(() => {
 			// обновляю данные
-			this.pprDisabledUpdate()
+			this.updateDisables()
 		})
 	},
 
@@ -475,10 +477,10 @@ let FormUnitsAndGoals = React.createClass({
 	// Изменилась настройка ППР
 	onPprCheckChange(event) {
 		console.log('Fire p==* [FormUnitsAndGoals.onPprCheckChange]', event)
-		this.pprDisabledUpdate()
+		this.updateDisables()
 	},
 
-	pprDisabledUpdate() {
+	updateDisables() {
 		this.refs.ppr.setDisabled(!this.refs.ppr_check.getValue())
 	},
 
@@ -513,6 +515,11 @@ let FormUnitsAndGoals = React.createClass({
 
 	render() {
 		console.log('Fire p==* [FormUnitsAndGoals.render]', this.state)
+
+		// обновляю заголовок
+		let title = (((this.state.data || {}).goals || {}).project_name || {}).value
+			|| '*Новый проект'
+		window.PEM.updateTitle(title)
 
 		let config = this.state.data.config,
 			units = this.state.data.units,

@@ -7,13 +7,13 @@ import { createHashHistory } from 'history'
 import history from './core/history'
 
 // загружаю компоненты
+import Header from './components/Controls/Header'
+import MainMenu from './components/Controls/MainMenu'
 import Calculator from './components/Calculator/Calculator'
-import MainMenu from './components/Menu/MainMenu'
 
 // загружу реакт, а то будет просить
 import React from 'react'
 
-// статичный рендер
 render((
 	<Router history={history}>
 		<Route path="/" component={Calculator}>

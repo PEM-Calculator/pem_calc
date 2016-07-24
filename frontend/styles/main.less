@@ -6,14 +6,28 @@
 	color: red;
 }
 
+@font-color: #444;
+
+* {
+	color: @font-color;
+}
+
 body {
 	background: #F7F7F7;
 }
 
 header {
 	background: white;
-	box-shadow: 0px 2px 2px black;
+	box-shadow: 0 0px 20px rgba(0,0,0,0.3);
 	margin-bottom: 15px;
+
+	.blue-header {
+		background: #2B6CA3;
+
+		h3 {
+			color: white;
+		}
+	}
 
 	h1 {
 		font-size: 22px;
@@ -23,6 +37,27 @@ header {
 @white-form-border-color: rgb(204, 204, 204);
 @white-form-header-color: #2B6CA3;
 @white-form-header-bg-color: #E1EBF4;
+
+#mainmenu {
+	padding: 0 20px;
+	margin: 0;
+
+	a {
+		padding: 10px 15px;
+		display: inline-block;
+		color: @font-color;
+		text-decoration: none;
+
+		&:hover {
+			background: @white-form-header-bg-color;
+		}
+
+		&.selected {
+			color: @white-form-header-color;
+			border-bottom: 4px solid @white-form-header-color;
+		}
+	}
+}
 
 .white-form {
 	padding: 0;
@@ -83,6 +118,9 @@ header {
 }
 
 @period-width: 120px;
+@period-small-height: 18px;
+@period-middle-height: 25px;
+@period-large-height: 32px;
 
 table.values-table {
 	table-layout: fixed;
@@ -95,15 +133,60 @@ table.values-table {
 		border-left: 1px solid @white-form-border-color;
 		border-right: 1px solid @white-form-border-color;
 
+		div.td_items {
+			display: inline-block;
+
+			&.period_pre_td {
+				border-bottom: 1px solid @white-form-border-color;
+			}
+
+			&.kpr_plan_percent_td, &.prpz_percent_td, &.kpr_fact_percent_td, &.frfz_percent_td {
+				.period-item {
+					line-height: @period-small-height;
+				}
+			}
+
+			&.period_pre_td, &.period_td, &.plan_begin_td, &.plan_end_td, &.timeline_td, &.kpr_plan_td, &.prpz_td, &.kpr_fact_td, &.frfz_td, &.eff_td, &.ks_td, &.kr_td {
+				.period-item {
+					line-height: @period-middle-height;
+				}
+			}
+
+			&.interval_td {
+				.period-item {
+					line-height: @period-large-height;
+				}
+			}
+
+			&.period_td_2 {
+				.period-item {
+					border-bottom: 1px solid @white-form-border-color;
+				}
+			}
+		}
+
 		div.period-item {
 			width: @period-width;
 			display: inline-block;
 			border-right: 1px solid @white-form-border-color;
-			line-height: 16px;
+			height: 100%;
 
-			&:last-child {
+			input[type="number"] {
+				background: #FFF3DB;
+				border: 1px solid silver;
+				border-left: 0;
 				border-right: 0;
+				width: @period-width - 1;
+				height: @period-middle-height;
 			}
+		}
+
+		div.period-item-half {
+			width: calc(@period-width / 2);
+			display: inline-block;
+			border: 1px solid @white-form-border-color;
+			border-left: 0;
+			height: 100%;
 		}
 	}
 

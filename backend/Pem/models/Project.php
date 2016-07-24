@@ -3,7 +3,7 @@
 use \Phalcon\Mvc\Model;
 use \Phalcon\Mvc\Model\Relation;
 
-class Projects extends \Rainbow\Models\BaseObject
+class Projects extends \Pem\Models\BaseObject
 {
 	const
 		DATE_UNIT_DAY	= 'day',

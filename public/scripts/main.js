@@ -1,0 +1,2 @@
+!function(e,a){a("#mainmenu a").removeClass("selected");var n=location.href.split("/")[3];a('#mainmenu a[href="/'+n+'"]').addClass("selected")}(window,jQuery),window.PEM={updateTitle:function(e){$("#header").html(e)}};
+//# sourceMappingURL=main.js.map

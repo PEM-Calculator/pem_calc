@@ -5,9 +5,9 @@ namespace Pem\Models;
 use \Phalcon\Mvc\Model;
 use \Phalcon\Mvc\Model\Relation;
 
-class Milestone extends \Rainbow\Models\BaseObject
+class Milestone extends \Pem\Models\BaseObject
 {
-	private
+	public
 		// веха обязательно должна быть внутри задачи
 		$task_id,		#	int(11)			NOT NULL
 
@@ -18,13 +18,47 @@ class Milestone extends \Rainbow\Models\BaseObject
 		$kpr_fact,		#	4. DOUBLE 		NULL
 		$frfz,			#	5. DOUBLE 		NULL
 		$fd,			#	6. DOUBLE		NULL
+		$ppr,
+		$krp,
 
 		// расчетные по периоду
 		$prfz,			#	7. DOUBLE 		NULL
 		$kd,			#	8. DOUBLE 		NULL
 		$ks,			#	9. DOUBLE 		NULL
 		$kr,			#	10. DOUBLE 		NULL
-		$eff;			#	11. DOUBLE 		NULL
+		$eff,			#	11. DOUBLE 		NULL
+
+		// Накопительные показатели
+		$sum_kpr_plan,
+		$sum_prpz,
+		$sum_pd,
+		$sum_kpr_fact,
+		$sum_frfz,
+		$sum_fd,
+
+		// Накопительные расчетные показатели
+		$sum_prfz,
+		$sum_kd,
+		$sum_ks,
+		$sum_kr,
+		$sum_eff,
+
+		// Прогнозные показатели (forecast)
+		$frc_fd,
+		$frc_frfz,
+		$frc_pr,
+		$frc_pre,
+
+		// Показатели отклонения по накопительным (deviation)
+		// Абсолютные (absolute)
+		$deva_fd,
+		$deva_frfz,
+		$deva_kpr,
+
+		// Относительные (relative)
+		$devr_fd,
+		$devr_frfz,
+		$devr_kpr;
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,18 +85,51 @@ class Milestone extends \Rainbow\Models\BaseObject
 
 		return [
 			// входные показатели
-			'kpr_plan'	=> $this->getKprPlan(),
-			'prpz'		=> $this->getPrpz(),
-			'pd'		=> $this->getPd(),
-			'kpr_fact'	=> $this->getKprFact(),
-			'frfz'		=> $this->getFrfz(),
-			'fd'		=> $this->getFd(),
+			'kpr_plan'	=> $this->kpr_plan,
+			'prpz'		=> $this->prpz,
+			'pd'		=> $this->pd,
+			'kpr_fact'	=> $this->kpr_fact,
+			'frfz'		=> $this->frfz,
+			'fd'		=> $this->fd,
+
 			// расчетные показатели
-			'prfz'		=> $this->getPrfz(),
-			'kd'		=> $this->getKd(),
-			'ks'		=> $this->getKs(),
-			'kr'		=> $this->getKr(),
-			'eff'		=> $this->getEff()
+			'prfz'		=> $this->prfz,
+			'kd'		=> $this->kd,
+			'ks'		=> $this->ks,
+			'kr'		=> $this->kr,
+			'eff'		=> $this->eff,
+
+			// Накопительные показатели
+			'sum_kpr_plan' => $this->sum_kpr_plan,
+			'sum_prpz' => $this->sum_prpz,
+			'sum_pd' => $this->sum_pd,
+			'sum_kpr_fact' => $this->sum_kpr_fact,
+			'sum_frfz' => $this->sum_frfz,
+			'sum_fd' => $this->sum_fd,
+
+			// Накопительные расчетные показатели
+			'sum_prfz' => $this->sum_prfz,
+			'sum_kd' => $this->sum_kd,
+			'sum_ks' => $this->sum_ks,
+			'sum_kr' => $this->sum_kr,
+			'sum_eff' => $this->sum_eff,
+
+			// Прогнозные показатели (forecast)
+			'frc_fd' => $this->frc_fd,
+			'frc_frfz' => $this->frc_frfz,
+			'frc_pr' => $this->frc_pr,
+			'frc_pre' => $this->frc_pre,
+
+			// Показатели отклонения по накопительным (deviation)
+			// Абсолютные (absolute)
+			'deva_fd' => $this->deva_fd,
+			'deva_frfz' => $this->deva_frfz,
+			'deva_kpr' => $this->deva_kpr,
+
+			// Относительные (relative)
+			'devr_fd' => $this->devr_fd,
+			'devr_frfz' => $this->devr_frfz,
+			'devr_kpr' => $this->devr_kpr,
 		];
 	}
 
@@ -84,33 +151,6 @@ class Milestone extends \Rainbow\Models\BaseObject
 	//		Getters
 	//
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	// Входные показатели
-
-	public function getKprPlan() { return $this->kpr_plan; }
-	public function getPrpz() { return $this->prpz; }
-	public function getPd() { return $this->pd; }
-	public function getKprFact() { return $this->kpr_fact; }
-	public function getFrfz() { return $this->frfz; }
-	public function getFd() { return $this->fd; }
-
-	// Расчетные показатели
-
-	public function getPrfz() { return $this->prfz; }
-	public function getKd() { return $this->kd; }
-	public function getKs() { return $this->ks; }
-	public function getKr() { return $this->kr; }
-	public function getEff() { return $this->eff; }
-
-	// Показатели родителя
-
-	public function getKrp() {
-		$parent = $this->task;
-		if($parent === false)
-			return 1.0;
-		else
-			return $parent->getKrp();
-	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
@@ -211,6 +251,11 @@ class Milestone extends \Rainbow\Models\BaseObject
 	 * Вернет true или int в случае ошибки
 	 */
 	public function calculate() {
+		// КРП
+		$this->krp = (!$this->ppr)
+			? 1.0
+			: $this->prpz / $this->ppr;
+
 		// сначала валидация
 		$result = $this->validateMe();
 		if($result !== true)
@@ -218,30 +263,30 @@ class Milestone extends \Rainbow\Models\BaseObject
 
 		// ПРФЗ
 		$this->prfz = (!$this->kpr_plan || is_null($this->kpr_fact) || is_null($this->prpz))
-			? 0.0
+			? null
 			: $this->kpr_fact / $this->kpr_plan * $this->prpz;
 
 		// Кд
 		if(!$this->fd || is_null($this->pd))
-			$this->kd = 0.0;
+			$this->kd = null;
 		else
-			$this->kd = ($this->pd > $this->fd)
+			$this->kd = ($this->pd >= $this->fd)
 				? 1.0
 				: ($this->pd / $this->fd);
 
 		// Кс
-		$this->ks = (!$this->prpz || is_null($this->prfz) || is_null($this->kd))
-			? 0.0
+		$this->ks = (!$this->prpz || is_null($this->prfz) || is_null($this->frfz) || is_null($this->kd))
+			? null
 			: $this->prfz / $this->prpz * $this->kd;
 
 		// Кр
 		$this->kr = (!$this->prfz)
-			? 0.0
-			: 1 + (1 - $this->frfz / $this->prfz) * $this->getKrp();
+			? null
+			: 1 + (1 - $this->frfz / $this->prfz) * $this->krp;
 
 		// Эфф
 		$this->eff = (is_null($this->ks) || is_null($this->kr))
-			? 0.0
+			? null
 			: $this->ks * $this->kr;
 
 		return true;
