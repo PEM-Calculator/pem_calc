@@ -1,2 +1,2 @@
-!function(e,a){a("#mainmenu a").removeClass("selected");var n=location.href.split("/")[3];a('#mainmenu a[href="/'+n+'"]').addClass("selected")}(window,jQuery),window.PEM={updateTitle:function(e){$("#header").html(e)}};
+window.PEM={updateTitle:function(e){$("#header").html(e)},updateMenu:function(){$("#mainmenu a").removeClass("selected");var e=location.href.split("/")[3];$('#mainmenu a[href="/'+e+'"]').addClass("selected")}},window.PEM.updateMenu();
 //# sourceMappingURL=main.js.map

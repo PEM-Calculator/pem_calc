@@ -1,15 +1,14 @@
 'use strict'
-// загружаю nodejs модули
+//
 import _ from 'lodash'
 import React from 'react'
 import Reflux from 'reflux'
-import { Link } from 'react-router'
-// загружаю компоненты
-import history from './../../core/history'
+//
+import History from './../../core/history'
 import Tools from './../../core/tools'
-import CalculatorStore from './../../models/CalculatorStore'
-import InputGoals from './InputGoals'
+import Store from './../../models/CalculatorStore'
 
+// щирина столбца
 let period_width = 120
 
 //	------------------------------------------
@@ -17,88 +16,10 @@ let period_width = 120
 //
 //		@props
 //	------------------------------------------
-let FormMilestones = React.createClass({
-	mixins: [Reflux.connect(CalculatorStore, 'db')],
+module.exports = React.createClass({
+	mixins: [Reflux.connect(Store, 'db')],
 	isEditPlan: false,
 	isEditFact: false,
-
-	//	----- обработка событий -----
-
-	onFormSubmit(event) {
-		console.log('Fire p==* [FormMilestones.onFormSubmit]', this.state)
-		event.preventDefault()
-
-		// проверю все этапы
-		let errors = []
-
-		for(let i in this.state.db.periods) {
-			let period = this.state.db.periods[i]
-			// 1 rule
-			period.fd.value = period.pd.value
-			if(!period.pd.value && !period.fd.value)
-				errors.push('В периоде нужно указать плановую длительность и/или фактическую длительность')
-			// 2 rule
-			if(period.pd.value && !period.kpr.value)
-				errors.push('Если укаана плановая длительность, то нужно указать КПР план')
-			// а вдруг ошибки
-			if(errors.length) {
-				alert('Ошибки при сохранении:\n\n- ' + errors.join('\n- '))
-				return
-			}
-		}
-
-		this.formSubmit()
-	},
-
-	formSubmit() {
-		console.log('Fire p==* [FormMilestones.formSubmit]', this.state)
-		CalculatorStore.Actions.savePeriods((noErrors) => {
-			// если ошибок нет, перехожу на страницу периодов
-			if(noErrors) {
-				history.push('/')
-			}
-		})
-	},
-
-	onAddNewPeriodClick(event) {
-		console.log('Fire p==* [FormMilestones.onAddNewPeriodClick]', this.state)
-		event.preventDefault()
-		CalculatorStore.Actions.addNewPeriod()
-	},
-
-	// изменилось одно из значений периодов
-	onPeriodInputChange(event) {
-		console.log('Fire p==* [FormMilestones.onPeriodInputChange]')
-
-		let periods = _.map(this.refs, (ref) => { return ref.value })
-
-		CalculatorStore.Actions.updatePeriods(periods, (updatedPeriods) => {
-			// callback который обновит readonly поля
-			let refs = this.refs
-			_.map(updatedPeriods, (period, key) => {
-				refs[key].setValue(period)
-			})
-		})
-	},
-
-	// удалился один из этапов
-	onDeleteMilestone(event) {
-		console.log('Fire p==* [FormMilestones.onDeleteMilestone]', this.refs, event)
-
-		var refs = this.refs
-		var deleteIndex = null
-		_.map(refs, (ref, key) => {
-			if(ref.refs.deleteButton == event.target)
-				deleteIndex = key
-		})
-
-		if(deleteIndex !== null)
-			CalculatorStore.Actions.deletePeriod(deleteIndex, () => {
-				_.map(refs, (ref, key) => {
-					ref.updateValue(this.state.db.periods[key])
-				})
-			})
-	},
 
 	// скролл по периодам
 	onTimelineScroll(event) {
@@ -152,13 +73,11 @@ let FormMilestones = React.createClass({
 			let inputs = kpr_plan_divs[key].getElementsByTagName('input')
 			if(inputs && inputs[0]) {
 				periods[key].kpr.value = Tools.parseFloatOrNull(inputs[0].value)
-				console.log('PARSE1', periods[key].kpr.value, '<-', inputs[0].value)
 			}
 			// ПРПЗ
 			inputs = plan_prpz_divs[key].getElementsByTagName('input')
 			if(inputs && inputs[0]) {
 				periods[key].prpz.value = Tools.parseFloatOrNull(inputs[0].value)
-				console.log('PARSE2', periods[key].prpz.value, '<-', inputs[0].value)
 			}
 		}
 
@@ -186,11 +105,11 @@ let FormMilestones = React.createClass({
 			// добавляю новый период
 			if(kpr_plan || prpz) {
 				periods[periods.length-1].po.value = po_last_gen
-				CalculatorStore.Actions.addNewPeriod(pn_gen, po_gen, kpr_plan, prpz)
+				Store.Actions.addNewPeriod(pn_gen, po_gen, kpr_plan, prpz)
 			}
 		}
 
-		CalculatorStore.Actions.savePeriods((noErrors) => {
+		Store.Actions.savePeriods((noErrors) => {
 			if(noErrors) {
 				this.isEditPlan = false
 				this.forceUpdate()
@@ -258,11 +177,11 @@ let FormMilestones = React.createClass({
 			// добавляю новый период
 			if(kpr_fact || frfz) {
 				periods[periods.length-1].po.value = po_last_gen
-				CalculatorStore.Actions.addNewPeriod(pn_gen, po_gen, null, null, kpr_fact, frfz)
+				Store.Actions.addNewPeriod(pn_gen, po_gen, null, null, kpr_fact, frfz)
 			}
 		}
 
-		CalculatorStore.Actions.savePeriods((noErrors) => {
+		Store.Actions.savePeriods((noErrors) => {
 			if(noErrors) {
 				this.isEditFact = false
 				this.forceUpdate()
@@ -310,10 +229,6 @@ let FormMilestones = React.createClass({
 		let title = (((this.state.db || {}).goals || {}).project_name || {}).value
 			|| '*Новый проект'
 		window.PEM.updateTitle(title)
-
-		// ссылки на методы
-		let onPeriodInputChange = this.onPeriodInputChange
-		let onDeleteMilestone = this.onDeleteMilestone
 
 		let config = this.state.db.config,
 			units = this.state.db.units,
@@ -367,7 +282,7 @@ let FormMilestones = React.createClass({
 			frfz_percent_sum = 0,
 			filled_fact_count = 0,	// сколько периодов заполнено факта
 			last_pre_period_text = null,	// текст большого периода
-			last_pre_period_key = 0	// ключ последнего большого периода
+			last_pre_period_key = 0 // ключ последнего большого периода
 
 		// генерирую DIVы
 		for(let key in periods) {
@@ -452,8 +367,10 @@ let FormMilestones = React.createClass({
 			let kpr_plan = (period.kpr && period.kpr.value ? period.kpr.value : null),
 				kpr_plan_percent = (kpr_plan ? 100 / goals.kpr.value * kpr_plan : null)
 			// E
-			if(kpr_plan) kpr_plan_sum += kpr_plan
-			if(kpr_plan_percent) kpr_plan_percent_sum += kpr_plan_percent
+			if(key < plan_period_count) {
+				if(kpr_plan) kpr_plan_sum += kpr_plan
+				if(kpr_plan_percent) kpr_plan_percent_sum += kpr_plan_percent
+			}
 
 			kpr_plan_td.push(
 				<div key={key} className="period-item center middle middle-value">
@@ -473,8 +390,10 @@ let FormMilestones = React.createClass({
 			let prpz = (period.prpz && period.prpz.value ? period.prpz.value : null),
 				prpz_percent = (prpz ? 100 / goals.prpz.value * prpz : null)
 			// E
-			if(prpz) prpz_sum += prpz
-			if(prpz_percent) prpz_percent_sum += prpz_percent
+			if(key < plan_period_count) {
+				if(prpz) prpz_sum += prpz
+				if(prpz_percent) prpz_percent_sum += prpz_percent
+			}
 
 			prpz_td.push(
 				<div key={key} className="period-item center middle middle-value">
@@ -591,7 +510,7 @@ let FormMilestones = React.createClass({
 		// если факт заполнен во всех периодах, но факт еще не 100%
 		// и если в режиме редактирования, то дабавляю везде по 1 периоду
 		////////////////////////////////////////////////////////////
-		if(filled_fact_count == all_period_count && kpr_plan_sum > kpr_fact_sum && (this.isEditPlan || this.isEditFact)) {
+		if(filled_fact_count == all_period_count && kpr_fact_percent_sum < 100.0 && (this.isEditPlan || this.isEditFact)) {
 			let key = periods.length,
 				period = {},
 				result = null,
@@ -805,7 +724,6 @@ let FormMilestones = React.createClass({
 					{last_pre_period_text}
 				</div>
 			)
-			console.log(period_pre_td, last_pre_period_text)
 		}
 
 		return (
@@ -970,10 +888,7 @@ let FormMilestones = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{(kpr_plan_sum - goals.kpr.value > 0 ? <span><span style={{color: 'red'}}>{kpr_plan_sum}</span>/</span> :
-											(kpr_plan_sum - goals.kpr.value < 0 ? <span>{kpr_plan_sum}/</span> : null)
-										)}
-										{Tools.formatNum(goals.kpr.value)}
+										{Tools.formatNum(kpr_fact_percent_sum)}
 									</td>
 								</tr>
 								<tr>
@@ -999,10 +914,7 @@ let FormMilestones = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{(prpz_sum - goals.prpz.value > 0 ? <span><span style={{color: 'red'}}>{prpz_sum}</span>/</span> :
-											(prpz_sum - goals.prpz.value < 0 ? <span>{prpz_sum}/</span> : null)
-										)}
-										{Tools.formatNum(goals.prpz.value)}
+										{Tools.formatNum(prpz_sum)}
 									</td>
 								</tr>
 								<tr>
@@ -1111,7 +1023,7 @@ let FormMilestones = React.createClass({
 						</table>
 					</form>
 					{/* Эффективность */}
-					{ results && <div className="item">
+					{ results.length > 0 && <div className="item">
 						<table className="values-table">
 							<colgroup>
 								<col style={td1_style}/>
@@ -1214,5 +1126,3 @@ let FormMilestones = React.createClass({
 		)
 	}
 })
-
-module.exports = FormMilestones

@@ -1,10 +1,16 @@
 'use strict'
-// загружаю модули
+//
 import _ from 'lodash'
 import React from 'react'
-import FormUnitsAndGoals from './FormUnitsAndGoals'
-import FormMilestones from './FormMilestones'
-import FormResults from './FormResults'
+import Reflux from 'reflux'
+//
+import History from './../../core/history'
+import Tools from './../../core/tools'
+import Store from './../../models/CalculatorStore'
+//
+import FormMonitor from './FormMonitor'
+import FormPlanFact from './FormPlanFact'
+import FormSettings from './FormSettings'
 
 /*
  *	class Calculator
@@ -24,8 +30,8 @@ let Calculator = React.createClass({
 	},
 })
 
-Calculator.FormUnitsAndGoals = FormUnitsAndGoals
-Calculator.FormMilestones = FormMilestones
-Calculator.FormResults = FormResults
+Calculator.FormMonitor = FormMonitor
+Calculator.FormPlanFact = FormPlanFact
+Calculator.FormSettings = FormSettings
 
 module.exports = Calculator

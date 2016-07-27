@@ -132,6 +132,7 @@ let CalculatorStore = Reflux.createStore({
 		let data = this.data,
 			periods = data.goals.plan_count.periods
 		data.periods = []
+		data.results = []
 		// на каждый период нужно разбить КПРплн и ПРПЗ
 		let day_length = 24*60*60*1000,
 			days = Math.floor((data.goals.po.value - data.goals.pn.value) / day_length) + 1,
