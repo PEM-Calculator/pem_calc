@@ -1,3 +1,5 @@
-.solutions/
-.trash/
-frontend/node_modules/
+.idea
+.solutions
+.trash
+frontend/node_modules
+public

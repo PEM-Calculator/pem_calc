@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "pem_calc_fe",
   "version": "1.0.0",
-  "description": "",
+  "description": "PEM Calculator Frontend",
   "main": "gulpfile.js",
   "dependencies": {
     "babel-plugin-transform-es2015-modules-commonjs-simple": "^6.7.4",

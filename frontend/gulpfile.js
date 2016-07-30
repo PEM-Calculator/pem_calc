@@ -1,4 +1,4 @@
-'user strict'
+'user strict';
 
 /*
  * 04. Инкрементальная сборка
@@ -7,24 +7,24 @@
  * chokidar. Но обычно хватает просто выполнить 'rebuild' ('clean', 'build')
  */
 
-const gulp = require('gulp')
-const bro = require('gulp-bro')				// babel + react
-const babelify = require('babelify')		// babel
-const less = require('gulp-less')			// less компилятор
-const concat = require('gulp-concat')		// модуль объекдинения файлов
-const debug = require('gulp-debug')			// дебаг для gulp
-const sourcemaps = require('gulp-sourcemaps')	// генератор Source-Map
-const gulpIf = require('gulp-if')			// условный оператор
-const newer = require('gulp-newer')			// плагин, который проверяет обновились ли файлы
-const remember = require('gulp-remember')	// плагин помнит, какие файлы нужно включить, например при concat
-const notify = require('gulp-notify')		// плагин для вывода ошибок
-const eslint = require('gulp-eslint')		// проверяльщик для JavaScript
-const clean_css = require('gulp-clean-css') // минификатор css
-const uglifyjs = require('gulp-uglifyjs')	// минификатор js
-const source = require('vinyl-source-stream')
-const multipipe = require('multipipe')		// создает .pipe, состоящий из нескольких .pipe
-const del = require('del')					// расширение для удаления файлов
-const path = require('path')
+const gulp = require('gulp');
+const bro = require('gulp-bro');				// babel + react
+const babelify = require('babelify');			// babel
+const less = require('gulp-less');				// less компилятор
+const concat = require('gulp-concat');			// модуль объекдинения файлов
+const debug = require('gulp-debug');			// дебаг для gulp
+const sourcemaps = require('gulp-sourcemaps');	// генератор Source-Map
+const gulpIf = require('gulp-if');				// условный оператор
+const newer = require('gulp-newer');			// плагин, который проверяет обновились ли файлы
+const remember = require('gulp-remember');		// плагин помнит, какие файлы нужно включить, например при concat
+const notify = require('gulp-notify');			// плагин для вывода ошибок
+const eslint = require('gulp-eslint');			// проверяльщик для JavaScript
+const clean_css = require('gulp-clean-css');	// минификатор css
+const uglifyjs = require('gulp-uglifyjs');		// минификатор js
+const source = require('vinyl-source-stream');
+const multipipe = require('multipipe');			// создает .pipe, состоящий из нескольких .pipe
+const del = require('del');						// расширение для удаления файлов
+const path = require('path');
 
 // метод вывода ошибки
 var
@@ -32,16 +32,16 @@ var
 		notify.onError({
 			title: 'Error',
 			message: '<%= error %>',
-		})(err)
+		})(err);
 		this.emit('end')
-	}
+	};
 
 // флаг разработчика
 const
-	isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'
+	isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 // чтобы React не ругался в консоли на дев-версию
-process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = 'production';
 
 // переменные
 var
@@ -58,12 +58,12 @@ var
 	$main_script = 'main.js',
 	// assets
 	$assets_src_path = $src_path + '/assets',
-	$assets_dest_path = $dest_path
+	$assets_dest_path = $dest_path;
 
 // Задача очистки public
 gulp.task('clean', function() {
 	return del([$dest_path], {force: true})
-})
+});
 
 // Задача для генерации стилей
 gulp.task('styles', function() {
@@ -88,7 +88,7 @@ gulp.task('styles', function() {
 		gulp.dest($styles_dest_path)
 	)
 	.on('error', notify.onError())
-})
+});
 
 // Задача для скриптов
 gulp.task('js', () => {
@@ -106,7 +106,7 @@ gulp.task('js', () => {
 		gulp.dest($scripts_dest_path)
 	)
 	.on('error', notify.onError())
-})
+});
 
 // Задача для JSX
 gulp.task('jsx', () => {
@@ -133,7 +133,7 @@ gulp.task('jsx', () => {
 		gulp.dest($scripts_dest_path)
 	)
 	.on('error', notify.onError())
-})
+});
 
 // Задача копирует все из assets
 gulp.task('assets', () => {
@@ -150,13 +150,13 @@ gulp.task('assets', () => {
 		gulp.dest($assets_dest_path)
 	)
 	.on('error', notify.onError())
-})
+});
 
 // build = styles + js + jsx + assets
-gulp.task('build', gulp.parallel('styles', 'js', 'jsx', 'assets'))
+gulp.task('build', gulp.parallel('styles', 'js', 'jsx', 'assets'));
 
 // rebuild = clean -> build
-gulp.task('rebuild', gulp.series('clean', 'build'))
+gulp.task('rebuild', gulp.series('clean', 'build'));
 
 // Задача инкрементальной сборки
 gulp.task('watch', () => {
@@ -167,20 +167,20 @@ gulp.task('watch', () => {
 		.on('unlink', (filepath) => {
 			// path.resolve создает из относительного пути абсолютный
 			remember.forget('styles', path.resolve(filepath))
-		})
+		});
 
 	// вотчер для сборки скриптов JS
-	gulp.watch($js_src_path + '/**', gulp.series('js'))
+	gulp.watch($js_src_path + '/**', gulp.series('js'));
 
 	// вотчер для сборки скриптов JSX
-	gulp.watch($jsx_src_path + '/**', gulp.series('jsx'))
+	gulp.watch($jsx_src_path + '/**', gulp.series('jsx'));
 
 	// вотчер для копирования assets
 	gulp.watch($assets_src_path + '/**', gulp.series('assets'))
-})
+});
 
 // dev = build -> watch
-gulp.task('dev', gulp.series('build', 'watch'))
+gulp.task('dev', gulp.series('build', 'watch'));
 
 // default = dev
-gulp.task('default', gulp.series(isDevelopment ? 'dev' : 'build'))
+gulp.task('default', gulp.series(isDevelopment ? 'dev' : 'build'));

@@ -14,7 +14,7 @@ import CalculatorStore from './../../models/CalculatorStore'
  *
  *	@props
  */
-let Header = React.createClass({
+let aHeader = React.createClass({
 	// миксин подменяет this.state.data
 	mixins: [Reflux.connect(CalculatorStore, 'data')],
 
@@ -32,4 +32,4 @@ let Header = React.createClass({
 	}
 })
 
-module.exports = Header
+module.exports = aHeader

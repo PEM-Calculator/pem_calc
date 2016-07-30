@@ -39,9 +39,6 @@ header {
 @white-form-header-bg-color: #E1EBF4;
 
 #mainmenu {
-	padding: 0 20px;
-	margin: 0;
-
 	a {
 		padding: 10px 15px;
 		display: inline-block;
@@ -252,7 +249,7 @@ table.values-table {
 
 #monitor-data {
 	.item.header {
-		padding: 5px 15px;
+		padding: 10px 15px;
 
 		.d1 {
 			text-transform: uppercase;
@@ -414,3 +411,38 @@ table.table.period-table {
 .align-top, .top { vertical-align: top }
 .align-middle, .middle { vertical-align: middle }
 .align-bottom, .bottom { vertical-align: bottom }
+
+.pointer { cursor: pointer }
+
+.value-block {
+	border: 1px solid silver;
+	border-radius: 3px;
+	background: #eee;
+}
+
+.effily-value {
+	background: #2B6CA3;
+	padding: 3px;
+	margin-bottom: 30px;
+	display: inline-block;
+	width: 70px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	position: relative;
+
+	&:after {
+		border: 35px solid transparent;
+		border-top: 10px solid #2B6CA3;
+		background: transparent;
+		content: ' ';
+		overflow: hidden;
+		position: absolute;
+		top: 30px;
+		left: 0px;
+		width: 0px;
+		height: 0px;
+	}
+}

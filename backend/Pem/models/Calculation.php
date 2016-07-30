@@ -164,6 +164,12 @@ class Calculation extends \Pem\Models\BaseObject
 
 			// создаю задачу, полчаю id
 			$task = $calc->addItem();
+
+            $task->kpr = $taskData->goal->kpr;
+            $task->ppr = $taskData->goal->ppr;
+            $task->prpz = $taskData->goal->prpz;
+            $task->pd = $taskData->goal->pd;
+
 			$task->create();
 
 			// показатели по периодам

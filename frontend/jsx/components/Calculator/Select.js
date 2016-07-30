@@ -50,12 +50,18 @@ module.exports = React.createClass({
 		event.preventDefault()
 
 		//console.log('Fired p==* [Select1.onPreChange]', event, event.target)
-		this.setValue(event.target.value)
 
-		if(this.props.onChange)
+		let target = $(event.target)
+		var value = target.attr('value')
+
+		this.setValue(value)
+
+		if(this.props.onChange) {
 			this.props.onChange(event)
-		else
+		}
+		else {
 			this.onChange(event)
+		}
 	},
 
 	// Метод на изменение по умолчанию
@@ -65,7 +71,7 @@ module.exports = React.createClass({
 
 	// Метод установки нового значения извне
 	setValue(newValue) {
-		//console.log('Fire p==* [Select1.setValue] from "%s" to "%s"', this.value, newValue)
+		//console.log('Fire p==* [Select1.setValue] from "%s" to "%s"', this.value, newValue, this.range, this.range.length)
 
 		// валидация
 		newValue = (parseInt(newValue) || 0)
@@ -75,6 +81,7 @@ module.exports = React.createClass({
 			newValue = this.range.length - 1
 
 		this.value = newValue
+
 		if(this.refs.title)
 			this.refs.title.innerText = this.getValueTitle()
 	},

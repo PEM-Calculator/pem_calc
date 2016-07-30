@@ -21,6 +21,10 @@ module.exports = React.createClass({
 	isEditPlan: false,
 	isEditFact: false,
 
+	// ----------
+	//	TRIGGERS
+	// ----------
+
 	// скролл по периодам
 	onTimelineScroll(event) {
 		event.preventDefault()
@@ -223,10 +227,22 @@ module.exports = React.createClass({
 	},
 
 	render() {
-		console.log('Fire p==* [FormMilestones.render]', this.state)
+		console.log('Fire p==* [FormMilestones.render1]', this.state)
+
+		// настройки пустые
+		if(!this.state || !this.state.db || !this.state.db.config.created) {
+			return (
+				<div className="alert alert-info">
+					<p>
+						Настройки не заполнены.
+					</p>
+					<a href="/settings" className="alert-link">Перейти в Настройки</a>
+				</div>
+			)
+		}
 
 		// обновляю заголовок
-		let title = (((this.state.db || {}).goals || {}).project_name || {}).value
+		let title = ((this.state.db.goals || {}).project_name || {}).value
 			|| '*Новый проект'
 		window.PEM.updateTitle(title)
 
@@ -382,7 +398,7 @@ module.exports = React.createClass({
 
 			kpr_plan_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{kpr_plan_percent !== null ? kpr_plan_percent.toFixed(2) + '%' : '-'}
+					{kpr_plan_percent !== null ? kpr_plan_percent.toFixed(0) + '%' : '-'}
 				</div>
 			)
 
@@ -405,7 +421,7 @@ module.exports = React.createClass({
 
 			prpz_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{prpz_percent !== null ? prpz_percent.toFixed(2) + '%' : '-'}
+					{prpz_percent !== null ? prpz_percent.toFixed(0) + '%' : '-'}
 				</div>
 			)
 
@@ -425,7 +441,7 @@ module.exports = React.createClass({
 
 			kpr_fact_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{kpr_fact_percent !== null ? kpr_fact_percent.toFixed(2) + '%' : '-'}
+					{kpr_fact_percent !== null ? kpr_fact_percent.toFixed(0) + '%' : '-'}
 				</div>
 			)
 
@@ -445,7 +461,7 @@ module.exports = React.createClass({
 
 			frfz_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{frfz_percent !== null ? frfz_percent.toFixed(2) + '%' : '-'}
+					{frfz_percent !== null ? frfz_percent.toFixed(0) + '%' : '-'}
 				</div>
 			)
 
@@ -888,7 +904,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{Tools.formatNum(kpr_fact_percent_sum)}
+										{Tools.formatNum(kpr_plan_sum)}
 									</td>
 								</tr>
 								<tr>
@@ -901,7 +917,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{kpr_plan_percent_sum ? kpr_plan_percent_sum.toFixed(2) + '%' : ''}
+										{kpr_plan_percent_sum ? kpr_plan_percent_sum.toFixed(0) + '%' : ''}
 									</td>
 								</tr>
 								<tr>
@@ -925,7 +941,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{prpz_percent_sum ? prpz_percent_sum.toFixed(2) + '%' : ''}
+										{prpz_percent_sum ? prpz_percent_sum.toFixed(0) + '%' : ''}
 									</td>
 								</tr>
 							</tbody>
@@ -992,7 +1008,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{kpr_fact_percent_sum ? kpr_fact_percent_sum.toFixed(2) + '%' : ''}
+										{kpr_fact_percent_sum ? kpr_fact_percent_sum.toFixed(0) + '%' : ''}
 									</td>
 								</tr>
 								<tr>
@@ -1016,7 +1032,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{frfz_percent_sum ? frfz_percent_sum.toFixed(2) + '%' : ''}
+										{frfz_percent_sum ? frfz_percent_sum.toFixed(0) + '%' : ''}
 									</td>
 								</tr>
 							</tbody>

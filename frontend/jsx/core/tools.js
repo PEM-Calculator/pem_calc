@@ -61,7 +61,7 @@ let Tools = {
 	calcPlanCount: function(pn, po, plan_range) {
 		//console.log('Fire p==* [TOOLS.calcPlanCount]', pn, po, plan_range)
 		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(plan_range),
-			day_length = 24*3600*1000
+				day_length = 24*3600*1000
 
 		if(!pn || !po || type === -1 || pn > po)
 			return null
@@ -328,7 +328,9 @@ let Tools = {
 
 	// форматирует число с разбивкой по тысячам
 	formatNum(num) {
-		return (num + '').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+		let parts = (num + '').split('.')
+		parts[0] = parts[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+		return parts.join('.')
 	},
 
 	// формирует значение доли
@@ -337,9 +339,9 @@ let Tools = {
 			return null
 
 		if(config == 1)
-			return (num * 100).toFixed(1) + '%'
+			return (num * 100).toFixed(0) + '%'
 		else
-			return (num * 1.0).toFixed(3)
+			return (num * 1.0).toFixed(2)
 	},
 
 	// парсит значение, вернет число либо null

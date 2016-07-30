@@ -1,13 +1,11 @@
 'use strict'
-//
+
 import _ from 'lodash'
 import React from 'react'
 import Reflux from 'reflux'
-//
 import History from './../../core/history'
 import Tools from './../../core/tools'
 import Store from './../../models/CalculatorStore'
-//
 import FormMonitor from './FormMonitor'
 import FormPlanFact from './FormPlanFact'
 import FormSettings from './FormSettings'

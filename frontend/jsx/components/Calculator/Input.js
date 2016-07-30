@@ -63,15 +63,15 @@ module.exports = React.createClass({
 
 		switch(this.data.type) {
 			case 'date':
-				this.setValue(Tools.stringToTime(event.target.value))
+				this.setValue(Tools.stringToTime(event.target.value), true)
 				break
 
 			case 'checkbox':
-				this.setValue(event.target.checked)
+				this.setValue(event.target.checked, true)
 				break
 
 			default:
-				this.setValue(event.target.value)
+				this.setValue(event.target.value, true)
 				break
 		}
 
@@ -87,9 +87,13 @@ module.exports = React.createClass({
 	},
 
 	// Метод установки нового значения извне
-	setValue(newValue) {
+	setValue(newValue, set_only = false) {
 		//console.log('Fire p==* [Input1.setValue] from "%s" to "%s"', this.value, newValue)
 		this.value = newValue
+
+		if(set_only) {
+			return
+		}
 
 		if(this.refs.input)
 			switch(this.data.type) {

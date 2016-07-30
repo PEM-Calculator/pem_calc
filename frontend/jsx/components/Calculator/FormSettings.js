@@ -1,20 +1,18 @@
 'use strict'
-//
+
 import _ from 'lodash'
 import React from 'react'
 import Reflux from 'reflux'
-//
 import History from './../../core/history'
 import Tools from './../../core/tools'
 import Store from './../../models/CalculatorStore'
-//
 import Input from './Input'
 import Select from './Select'
 import Dropdown from './Dropdown'
 
 module.exports = React.createClass({
 	// миксин подменяет this.state.data
-	mixins: [Reflux.connect(Store, 'data')],
+	mixins: [Reflux.connect(Store, 'db')],
 
 	componentDidMount() {
 		console.log('Fire p==* [FormUnitsAndGoals.componentDidMount]', this.state)
@@ -44,13 +42,13 @@ module.exports = React.createClass({
 				// есть ошибки, надо вывести
 				let errors = []
 
-				let units = this.state.data.units
+				let units = this.state.db.units
 				for(let key in units) {
 					if(units[key].error)
 						errors.push(units[key].title + ': ' + units[key].error)
 				}
 
-				let goals = this.state.data.goals
+				let goals = this.state.db.goals
 				for(let key in goals) {
 					if(goals[key].error)
 						errors.push(goals[key].title + ': ' + goals[key].error)
@@ -140,13 +138,15 @@ module.exports = React.createClass({
 		console.log('Fire p==* [FormUnitsAndGoals.render]', this.state)
 
 		// обновляю заголовок
-		let title = (((this.state.data || {}).goals || {}).project_name || {}).value
+		let title = (((this.state.db || {}).goals || {}).project_name || {}).value
 			|| '*Новый проект'
 		window.PEM.updateTitle(title)
 
-		let config = this.state.data.config,
-			units = this.state.data.units,
-			goals = this.state.data.goals
+		let config = this.state.db.config,
+			units = this.state.db.units,
+			goals = this.state.db.goals
+
+		console.log('GOALS', goals.ppr_check)
 
 		return (
 			<div className="white-form" style={{padding: '20px'}}>
@@ -179,13 +179,13 @@ module.exports = React.createClass({
 					<Select ref="result_method" data={goals.result_method}/>
 
 					{/* кнопки сохранить, отмена, сбросить */}
-					<button type="submit" className="btn btn-primary">{this.state.data.config.isNew ? 'Создать задачу' : 'Сохранить изменения'}</button>
+					<button type="submit" className="btn btn-primary">{this.state.db.config.isNew ? 'Создать задачу' : 'Сохранить изменения'}</button>
 					{/*&nbsp;
-					{this.state.data.config.isNew && <button type="button" className="btn" onClick={this.onStartDemo}>Заполнить демо</button>}
+					{this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onStartDemo}>Заполнить демо</button>}
 					&nbsp;
-					{!this.state.data.config.isNew && <button type="button" className="btn" onClick={this.onFormReload}>Отменить изменения</button>}*/}
+					{!this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReload}>Отменить изменения</button>}*/}
 					&nbsp;
-					{!this.state.data.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button>}
+					{!this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button>}
 				</form>
 				{this.props.children}
 			</div>

@@ -32,6 +32,7 @@ module.exports = React.createClass({
 	// Метод обновления переменной
 	updateValueFromProps(props) {
 		//console.log('Fire p==* [Dropdown1.updateValueFromProps]', props)
+
 		// список возможных значений
 		if(typeof props.data != 'object') {
 			this.setValue(props.data)
@@ -44,10 +45,20 @@ module.exports = React.createClass({
 		this.setValue(props.data.value || null)
 	},
 
+	// ----------
+	//	TRIGGERS
+	// ----------
+
 	// Событие при изменении значения поля ввода
 	onPreChange(event) {
+		event.preventDefault()
+
 		//console.log('Fired p==* [Dropdown1.onPreChange]')
-		this.setValue(event.target.value)
+
+		let target = $(event.target),
+			value = target.attr('value')
+
+		this.setValue(value)
 
 		if(this.props.onChange)
 			this.props.onChange(event)
@@ -59,6 +70,10 @@ module.exports = React.createClass({
 	onChange(event) {
 		//console.log('Fire p==* [Dropdown1.onChange]', event)
 	},
+
+	// ---------
+	//	SETTERS
+	// ---------
 
 	// Метод установки нового значения извне
 	setValue(newValue) {
@@ -77,6 +92,10 @@ module.exports = React.createClass({
 			this.refs.title.innerText = this.getValueTitle()
 	},
 
+	// ---------
+	//	GETTERS
+	// ---------
+
 	// Метод возвращает человеко-значение
 	getValue() {
 		return this.value
@@ -86,6 +105,10 @@ module.exports = React.createClass({
 		let value = this.getValue()
 		return this.range[value].title
 	},
+
+	// --------
+	//	RENDER
+	// --------
 
 	render() {
 		let data = this.props.data
