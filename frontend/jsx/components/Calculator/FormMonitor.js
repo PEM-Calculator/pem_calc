@@ -84,6 +84,17 @@ module.exports = React.createClass({
             min_period_index = 0,
             max_period_index = results.length - 1
 
+		// надо проверить забитость периодов по факту
+		for(let i = max_period_index; i >= min_period_index; i--)
+		{
+			if(results[i].kpr_fact === null || results[i].frfz === null) {
+				max_period_index--
+			}
+			else {
+				break;
+			}
+		}
+
         // устанавливаю период
         if (this.period_index === null) {
             this.period_index = max_period_index

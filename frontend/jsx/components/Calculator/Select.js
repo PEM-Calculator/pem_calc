@@ -51,8 +51,9 @@ module.exports = React.createClass({
 
 		//console.log('Fired p==* [Select1.onPreChange]', event, event.target)
 
-		let target = $(event.target)
-		var value = target.attr('value')
+		let //target = $(event.target),
+			//value = target.attr('value')
+			value = event.target.value
 
 		this.setValue(value)
 

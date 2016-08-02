@@ -232,9 +232,13 @@ class Task extends \Pem\Models\BaseObject
                 : $E_prfz / $E_prpz * $E_kd;
 
             // Кр
-            $E_kr = (!$E_prfz)
-                ? null
-                : 1 + (1 - $E_frfz / $E_prfz) * $this->krp;
+            $E_kr = (is_null($E_frfz) || is_null($E_kpr_fact)
+				? null
+					: (!$E_prfz && !$E_frfz
+						? 1.0
+						: (!$E_prfz
+		                	? null
+		                	: 1 + (1 - $E_frfz / $E_prfz) * $this->krp)));
 
             // Эфф
             $E_eff = (is_null($E_ks) || is_null($E_kr))

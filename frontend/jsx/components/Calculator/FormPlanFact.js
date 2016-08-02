@@ -380,8 +380,8 @@ module.exports = React.createClass({
 			}
 
 			// Показатели КПР ПЛАН
-			let kpr_plan = (period.kpr && period.kpr.value ? period.kpr.value : null),
-				kpr_plan_percent = (kpr_plan ? 100 / goals.kpr.value * kpr_plan : null)
+			let kpr_plan = (period.kpr !== null && period.kpr.value !== null ? period.kpr.value : null),
+				kpr_plan_percent = (kpr_plan !== null ? 100 / goals.kpr.value * kpr_plan : null)
 			// E
 			if(key < plan_period_count) {
 				if(kpr_plan) kpr_plan_sum += kpr_plan
@@ -403,8 +403,8 @@ module.exports = React.createClass({
 			)
 
 			// Показатели ПРПЗ
-			let prpz = (period.prpz && period.prpz.value ? period.prpz.value : null),
-				prpz_percent = (prpz ? 100 / goals.prpz.value * prpz : null)
+			let prpz = (period.prpz !== null && period.prpz.value !== null ? period.prpz.value : null),
+				prpz_percent = (prpz !== null ? 100 / goals.prpz.value * prpz : null)
 			// E
 			if(key < plan_period_count) {
 				if(prpz) prpz_sum += prpz
@@ -426,8 +426,8 @@ module.exports = React.createClass({
 			)
 
 			// Показатели КПР ФАКТ
-			let kpr_fact = (period.kpr_fact && period.kpr_fact.value ? period.kpr_fact.value : null),
-				kpr_fact_percent = (kpr_fact ? 100 / goals.kpr.value * kpr_fact : null)
+			let kpr_fact = (period.kpr_fact !== null && period.kpr_fact.value !== null ? period.kpr_fact.value : null),
+				kpr_fact_percent = (kpr_fact !== null ? 100 / goals.kpr.value * kpr_fact : null)
 			if(kpr_fact) kpr_fact_sum += kpr_fact
 			if(kpr_fact_percent) kpr_fact_percent_sum += kpr_fact_percent
 
@@ -446,8 +446,8 @@ module.exports = React.createClass({
 			)
 
 			// Показатели ФРФЗ
-			let frfz = (period.frfz && period.frfz.value ? period.frfz.value : null),
-				frfz_percent = (frfz ? 100 / goals.prpz.value * frfz : null)
+			let frfz = (period.frfz !== null && period.frfz.value !== null ? period.frfz.value : null),
+				frfz_percent = (frfz !== null ? 100 / goals.prpz.value * frfz : null)
 			if(frfz) frfz_sum += frfz
 			if(frfz_percent) frfz_percent_sum += frfz_percent
 
@@ -526,7 +526,7 @@ module.exports = React.createClass({
 		// если факт заполнен во всех периодах, но факт еще не 100%
 		// и если в режиме редактирования, то дабавляю везде по 1 периоду
 		////////////////////////////////////////////////////////////
-		if(filled_fact_count == all_period_count && kpr_fact_percent_sum < 100.0 && (this.isEditPlan || this.isEditFact)) {
+		if(filled_fact_count == all_period_count && kpr_fact_percent_sum < 100.0 && this.isEditPlan) {
 			let key = periods.length,
 				period = {},
 				result = null,
@@ -859,6 +859,7 @@ module.exports = React.createClass({
 					{/**********************************************************
 						ПЛАН
 					**********************************************************/}
+
 					<div className="item header" style={{padding: '10px'}}>
 						<table className="values-table">
 							<colgroup>
@@ -909,7 +910,7 @@ module.exports = React.createClass({
 								</tr>
 								<tr>
 									<td className="center middle">
-										{goals.result_name.value}
+										({goals.result_name.value}, {units.unit_result.value})
 									</td>
 									<td ref="kpr_plan_percent_td" className="period-row">
 										<div className="td_items kpr_plan_percent_td">
@@ -947,9 +948,11 @@ module.exports = React.createClass({
 							</tbody>
 						</table>
 					</form>
+
 					{/**********************************************************
 						ФАКТ
 					**********************************************************/}
+
 					<div className="item header" style={{padding: '10px'}}>
 						<table className="values-table">
 							<colgroup>
@@ -1000,7 +1003,7 @@ module.exports = React.createClass({
 								</tr>
 								<tr>
 									<td className="center middle">
-										{goals.result_name.value}
+										({goals.result_name.value}, {units.unit_result.value})
 									</td>
 									<td ref="kpr_fact_percent_td" className="period-row">
 										<div className="td_items kpr_fact_percent_td">
@@ -1039,7 +1042,7 @@ module.exports = React.createClass({
 						</table>
 					</form>
 					{/* Эффективность */}
-					{ results.length > 0 && <div className="item">
+					{ results.length > 0 && <div className="item" style={{ paddingTop: '50px' }}>
 						<table className="values-table">
 							<colgroup>
 								<col style={td1_style}/>
@@ -1052,7 +1055,7 @@ module.exports = React.createClass({
 										<h3>Эффективность</h3>
 									</td>
 									<td ref="interval1_td" className="period-row">
-										<div className="td_items interval_td">
+										<div className="td_items interval1_td">
 											{interval_td}
 										</div>
 									</td>

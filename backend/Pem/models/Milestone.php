@@ -280,9 +280,13 @@ class Milestone extends \Pem\Models\BaseObject
 			: $this->prfz / $this->prpz * $this->kd;
 
 		// Кр
-		$this->kr = (!$this->prfz)
+		$this->kr = (is_null($this->frfz) || is_null($this->kpr_fact)
 			? null
-			: 1 + (1 - $this->frfz / $this->prfz) * $this->krp;
+			: (!$this->prfz && !$this->frfz
+				? 1.0
+				: (!$this->prfz
+					? null
+					: 1 + (1 - $this->frfz / $this->prfz) * $this->krp)));
 
 		// Эфф
 		$this->eff = (is_null($this->ks) || is_null($this->kr))
