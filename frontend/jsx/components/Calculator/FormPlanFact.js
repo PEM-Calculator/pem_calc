@@ -66,9 +66,10 @@ module.exports = React.createClass({
 		let config = this.state.db.config,
 			units = this.state.db.units,
 			goals = this.state.db.goals,
-			periods = this.state.db.periods
-
-		let kpr_plan_divs = this.refs.kpr_plan_td.getElementsByClassName('period-item'),
+			periods = this.state.db.periods,
+			plan_end_divs = this.refs.plan_end_td.getElementsByClassName('period-item'),
+			plan_end = null,
+			kpr_plan_divs = this.refs.kpr_plan_td.getElementsByClassName('period-item'),
 			plan_prpz_divs = this.refs.prpz_td.getElementsByClassName('period-item')
 
 		// проверяю и сохраняю новые значения
@@ -88,6 +89,9 @@ module.exports = React.createClass({
 		// а может появился новый период?
 		if(kpr_plan_divs.length > periods.length && plan_prpz_divs.length > periods.length) {
 			let length = periods.length
+			// Дата окончания нового периода
+			let input = plan_end_divs[length].getElementsByTagName('input'),
+				plan_end = Tools.stringToDate(input[0].value)
 			// КПР
 			let inputs = kpr_plan_divs[length].getElementsByTagName('input'),
 				kpr_plan = null,
@@ -104,10 +108,22 @@ module.exports = React.createClass({
 			let	plan_range = goals.plan_range.value,
 				plan_range_value = goals.plan_range.range[plan_range].value,
 				po_last_gen = periods[length-1].po.value,
-				pn_gen = po_last_gen + 24*3600*1000,
-				po_gen = Tools.getFinishOfPeriod(pn_gen, plan_range_value)
+				pn_gen = po_last_gen + 86400000,
+				po_gen_max = Tools.getFinishOfPeriod(pn_gen, plan_range_value),
+				po_gen = plan_end.getTime()
+
+			// валидация
+			if(po_gen > po_gen_max) {
+				alert('Дата завершения периода не может превышать разрешенную ' + Tools.parseDate(new Date(po_gen_max)).date)
+				return
+			}
+			else if(po_gen < pn_gen) {
+				alert('Дата завершения периода не может быть меньше даты начала периода ' + Tools.parseDate(new Date(pn_gen)).date)
+				return
+			}
+
 			// добавляю новый период
-			if(kpr_plan || prpz) {
+			if(kpr_plan !== null || prpz !== null) {
 				periods[periods.length-1].po.value = po_last_gen
 				Store.Actions.addNewPeriod(pn_gen, po_gen, kpr_plan, prpz)
 			}
@@ -392,13 +408,13 @@ module.exports = React.createClass({
 				<div key={key} className="period-item center middle middle-value">
 					{this.isEditPlan
 						? <input type="number" defaultValue={kpr_plan}/>
-						: (kpr_plan !== null ? Tools.formatNum(kpr_plan) : '-')}
+					: (kpr_plan !== null ? Tools.formatNum(kpr_plan.toFixed(2)) : '-')}
 				</div>
 			)
 
 			kpr_plan_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{kpr_plan_percent !== null ? kpr_plan_percent.toFixed(0) + '%' : '-'}
+					{kpr_plan_percent !== null ? kpr_plan_percent.toFixed(1) + '%' : '-'}
 				</div>
 			)
 
@@ -415,13 +431,13 @@ module.exports = React.createClass({
 				<div key={key} className="period-item center middle middle-value">
 					{this.isEditPlan
 						? <input type="number" defaultValue={prpz}/>
-						: (prpz !== null ? Tools.formatNum(prpz) : '-')}
+					: (prpz !== null ? Tools.formatNum(prpz.toFixed(2)) : '-')}
 				</div>
 			)
 
 			prpz_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{prpz_percent !== null ? prpz_percent.toFixed(0) + '%' : '-'}
+					{prpz_percent !== null ? prpz_percent.toFixed(1) + '%' : '-'}
 				</div>
 			)
 
@@ -435,13 +451,13 @@ module.exports = React.createClass({
 				<div key={key} className="period-item center middle middle-value">
 					{this.isEditFact
 						? <input type="number" defaultValue={kpr_fact}/>
-						: (kpr_fact !== null ? Tools.formatNum(kpr_fact) : '-')}
+					: (kpr_fact !== null ? Tools.formatNum(kpr_fact.toFixed(2)) : '-')}
 				</div>
 			)
 
 			kpr_fact_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{kpr_fact_percent !== null ? kpr_fact_percent.toFixed(0) + '%' : '-'}
+					{kpr_fact_percent !== null ? kpr_fact_percent.toFixed(1) + '%' : '-'}
 				</div>
 			)
 
@@ -455,13 +471,13 @@ module.exports = React.createClass({
 				<div key={key} className="period-item center middle middle-value">
 					{this.isEditFact
 						? <input type="number" defaultValue={frfz}/>
-						: (frfz !== null ? Tools.formatNum(frfz) : '-')}
+					: (frfz !== null ? Tools.formatNum(frfz.toFixed(2)) : '-')}
 				</div>
 			)
 
 			frfz_percent_td.push(
 				<div key={key} className="period-item center middle">
-					{frfz_percent !== null ? frfz_percent.toFixed(0) + '%' : '-'}
+					{frfz_percent !== null ? frfz_percent.toFixed(1) + '%' : '-'}
 				</div>
 			)
 
@@ -524,7 +540,7 @@ module.exports = React.createClass({
 
 		////////////////////////////////////////////////////////////
 		// если факт заполнен во всех периодах, но факт еще не 100%
-		// и если в режиме редактирования, то дабавляю везде по 1 периоду
+		// и если в режиме редактирования плана, то дабавляю везде по 1 периоду
 		////////////////////////////////////////////////////////////
 		if(filled_fact_count == all_period_count && kpr_fact_percent_sum < 100.0 && this.isEditPlan) {
 			let key = periods.length,
@@ -532,7 +548,7 @@ module.exports = React.createClass({
 				result = null,
 				po_last_gen = periods[key-1].po.value,
 				po_last = Tools.parseDate(new Date(po_last_gen)),
-				pn_gen = po_last_gen + 24*3600*1000,
+				pn_gen = po_last_gen + 86400000,
 				po_gen = Tools.getFinishOfPeriod(pn_gen, plan_range_value),
 				pn = Tools.parseDate(new Date(pn_gen)),
 				po = Tools.parseDate(new Date(po_gen)),
@@ -609,7 +625,7 @@ module.exports = React.createClass({
 
 			plan_end_td.push(
 				<div key={key+1} className="period-item center middle">
-					{po.date}
+					<input type="date" defaultValue={po.date_sql}/>
 				</div>
 			)
 
@@ -1127,8 +1143,8 @@ module.exports = React.createClass({
 						<table id="helpbox">
 							<tbody>
 								<tr>
-									<td style={{padding: '20px'}}>
-										<img src="/img/help01.png"/>
+									<td style={ {padding: '40px 20px 20px 20px'} }>
+										<img src="/img/help02.png"/>
 									</td>
 									<td style={{padding: '20px'}} className="left top">
 										История изменения эффективности по<br/>

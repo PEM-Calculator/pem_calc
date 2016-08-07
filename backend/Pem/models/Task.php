@@ -175,7 +175,7 @@ class Task extends \Pem\Models\BaseObject
             ? 1.0
             : $this->prpz / $this->ppr;
 
-        $result = $this->calculateItems();
+		$result = $this->calculateItems();
         if ($result !== true) return $result;
 
         return true;
@@ -198,8 +198,12 @@ class Task extends \Pem\Models\BaseObject
             $result = $ms->calculate();
             if ($result !== true) return $result;
 
-            $E_kpr_plan = min($ms->kpr_plan + $E_kpr_plan, $this->kpr);
-            $E_prpz = min($ms->prpz + $E_prpz, $this->prpz);
+			if(!is_null($ms->kpr_plan)) {
+            	$E_kpr_plan = min($ms->kpr_plan + $E_kpr_plan, $this->kpr);
+			}
+			if(!is_null($ms->prpz)) {
+            	$E_prpz = min($ms->prpz + $E_prpz, $this->prpz);
+			}
             $E_pd = min($ms->pd + $E_pd, $this->pd);
 
             $E_kpr_fact += $ms->kpr_fact;

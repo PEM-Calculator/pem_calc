@@ -172,7 +172,7 @@ table.values-table {
 			border-right: 1px solid @white-form-border-color;
 			height: 100%;
 
-			input[type="number"] {
+			input[type="number"], input[type="date"] {
 				background: #FFF3DB;
 				border: 1px solid silver;
 				border-left: 0;
@@ -449,4 +449,10 @@ table.table.period-table {
 		width: 0px;
 		height: 0px;
 	}
+}
+
+.hide-text {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }

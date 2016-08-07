@@ -40,30 +40,27 @@ let CalculatorStore = Reflux.createStore({
 
 	updateValues(data_array) {
 		console.log('Fire p==* [STORE.updateValues]', data_array)
-		console.log(this.data.goals)
-		console.log(this.data.units)
 		// data_array = [kpr, ppr_check, ppr, prpz, pn, po]
 		this.data.units.unit_time.value = data_array.unit_time || this.data.units.unit_time.value
 		this.data.units.unit_result.value = data_array.unit_result || this.data.units.unit_result.value
 		this.data.units.unit_expense.value = data_array.unit_expense || this.data.units.unit_expense.value
 
-		this.data.goals.currency.value = data_array.currency || this.data.goals.currency.value
 		this.data.goals.project_name.value = data_array.project_name || this.data.goals.project_name.value
 		this.data.goals.result_name.value = data_array.result_name || this.data.goals.result_name.value
 
 		// парсинг чисел
-		let kpr = (parseInt(data_array.kpr) || 0) * 1.0,
-			ppr_check = (data_array.ppr_check != false ? true : false),
-			ppr = (parseInt(data_array.ppr) || 0) * 1.0,
-			prpz = (parseInt(data_array.prpz) || 0) * 1.0,
-			plan_range = (parseInt(data_array.plan_range) || 0),
+		let kpr = Tools.parseFloatOrNull(data_array.kpr),
+			ppr_check = (data_array.ppr_check ? true : false),
+			ppr = Tools.parseFloatOrNull(data_array.ppr),
+			prpz = Tools.parseFloatOrNull(data_array.prpz),
+			plan_range = Tools.parseIntOrNull(data_array.plan_range),
 			plan_range_count = this.data.goals.plan_range.range.length,
-			plan_method = (parseInt(data_array.plan_method) || 0),
+			plan_method = Tools.parseIntOrNull(data_array.plan_method),
 			plan_method_count = this.data.goals.plan_method.range.length,
-			result_method = (parseInt(data_array.result_method) || 0),
+			result_method = Tools.parseIntOrNull(data_array.result_method),
 			result_method_count = this.data.goals.result_method.range.length,
-			pn = (parseInt(data_array.pn) || null),
-			po = (parseInt(data_array.po) || null)
+			pn = Tools.parseIntOrNull(data_array.pn),
+			po = Tools.parseIntOrNull(data_array.po)
 		// расчеты
 		let krp = (ppr !== 0 ? prpz / ppr : 1.0),
 			pd = (pn && po && po >= pn
@@ -283,9 +280,9 @@ let CalculatorStore = Reflux.createStore({
 		this.data.config.result_name.value = 'Объем принятых работ по ПСД'
 		this.data.config.autor_name.value = 'Григорий Зуев'
 
-		this.data.units.unit_time.value = 'дн.'
-		this.data.units.unit_result.value = 'млн. руб.'
-		this.data.units.unit_expense.value = 'млн. руб.'
+		this.data.units.unit_time.value = 'дн'
+		this.data.units.unit_result.value = 'км'
+		this.data.units.unit_expense.value = '$'
 
 		this.updateGoals({
 			kpr: 500,
@@ -420,14 +417,15 @@ let CalculatorStore = Reflux.createStore({
 		this.data.goals.kpr.unit = this.data.units.unit_result
 		this.data.goals.ppr.unit = this.data.units.unit_expense
 		this.data.goals.prpz.unit = this.data.units.unit_expense
+		this.data.goals.ppr.unit = this.data.units.unit_expense
 		this.data.goals.pd.unit = this.data.units.unit_time
 		// периоды
 		for(let i in this.data.periods) {
-			this.data.periods[i].pd.unit = this.data.units.unit_time
 			this.data.periods[i].kpr.unit = this.data.units.unit_result
-			this.data.periods[i].prpz.unit = this.data.units.unit_expense
 			this.data.periods[i].kpr_fact.unit = this.data.units.unit_result
+			this.data.periods[i].prpz.unit = this.data.units.unit_expense
 			this.data.periods[i].frfz.unit = this.data.units.unit_expense
+			this.data.periods[i].pd.unit = this.data.units.unit_time
 		}
 	},
 
@@ -458,9 +456,12 @@ let CalculatorStore = Reflux.createStore({
 				placeholder: 'Например: кг., км., млн. руб., шт.'
 			},
 			unit_expense: {
-				type: 'text',
-				title: 'Единица измерения расходов',
-				placeholder: 'Например: кг., км., млн. руб., шт.'
+				title: 'Валюта',
+				range: [
+					{title: 'Рубль', value: '₽', className: 'ruble'},
+					{title: 'Доллар', value: '$', className: 'usd'},
+					{title: 'Евро', value: '€', className: 'euro'},
+				],
 			}
 		}
 
@@ -508,14 +509,6 @@ let CalculatorStore = Reflux.createStore({
 				title: 'Длительность (дней)',
 				placeholder: 'ПД',
 				readonly: true,
-			},
-			currency: {
-				title: 'Валюта',
-				range: [
-					{title: 'Рубль', value: 'ruble', className: 'ruble'},
-					{title: 'Доллар', value: 'usd', className: 'usd'},
-					{title: 'Евро', value: 'euro', className: 'euro'},
-				],
 			},
 			plan_range: {
 				title: 'Интервал планирования / отчетности',
@@ -586,10 +579,10 @@ let CalculatorStore = Reflux.createStore({
 	// Добавление нового пустого периода
 	addNewPeriod(pn, po, kpr, prpz, kpr_fact, frfz) {
 		console.log('Fire p==* [STORE.AddNewPeriod]', [pn, po, kpr, prpz])
-		kpr = (parseInt(kpr) || 0) * 1.0
-		prpz = (parseInt(prpz) || 0) * 1.0
-		kpr_fact = (parseInt(kpr_fact) || 0) * 1.0
-		frfz = (parseInt(frfz) || 0) * 1.0
+		kpr = Tools.parseFloatOrNull(kpr)
+		prpz = Tools.parseFloatOrNull(prpz)
+		kpr_fact = Tools.parseFloatOrNull(kpr_fact)
+		frfz = Tools.parseFloatOrNull(frfz)
 		// расчеты
 		let
 			pd = (pn && po && po >= pn
@@ -618,22 +611,22 @@ let CalculatorStore = Reflux.createStore({
 			kpr: {
 				type: 'number',
 				title: 'Ключевой показатель результата',
-				value: kpr || null,
+				value: kpr,
 			},
 			prpz: {
 				type: 'number',
 				title: 'Бюджет (Плановые расходы плановой задачи)',
-				value: prpz || null,
+				value: prpz,
 			},
 			kpr_fact: {
 				type: 'number',
 				title: 'Фактический результат',
-				value: kpr_fact || null,
+				value: kpr_fact,
 			},
 			frfz: {
 				type: 'number',
 				title: 'Фактические расходы фактической задачи',
-				value: frfz || null,
+				value: frfz,
 			},
 		})
 	},

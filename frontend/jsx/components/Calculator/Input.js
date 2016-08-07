@@ -134,26 +134,31 @@ module.exports = React.createClass({
 	},
 
 	render() {
+		let type = this.data.type,
+			unit = this.data.unit
+
+		console.log('*** UNIT', unit)
+
 		return (
 			<div className={'form-group' + (this.data.error ? ' has-error' : '')}>
 
-				{this.data.title && <label className="col-md-5 col-sm-5">{this.data.title}</label>}
+				{ this.data.title && <label className="col-md-5 col-sm-5">{this.data.title}</label> }
 
 				<div className="col-md-4 col-sm-5">
 					<input
 						ref="input"
-						className={this.data.type != 'checkbox' ? 'form-control' : ''}
-						type={this.data.type || 'text'}
-						defaultValue={this.getValue()}
-						placeholder={this.data.placeholder}
-						readOnly={this.data.readonly}
-						onChange={this.onPreChange} />
-					{this.data.error && <div className="alert alert-danger" role="alert">{this.data.error}</div>}
-					{this.data.description && <span className="help-block">{this.data.description}</span>}
+						className={ type != 'checkbox' ? 'form-control' : '' }
+						type={ type || 'text' }
+						defaultValue={ this.getValue() }
+						placeholder={ this.data.placeholder }
+						readOnly={ this.data.readonly }
+						onChange={ this.onPreChange } />
+					{ this.data.error && <div className="alert alert-danger" role="alert">{this.data.error}</div> }
+					{ this.data.description && <span className="help-block">{this.data.description}</span> }
 				</div>
-				{/*<div className="col-md-3 col-sm-2">
-					{data.unit && <span>{data.unit.value}</span>}
-				</div>*/}
+				<div className="col-md-3 col-sm-2">
+					{ unit && <span>{ unit.value ? (unit.range ? unit.range[unit.value].value : unit.value) : '' }</span> }
+				</div>
 			</div>
 		)
 	}

@@ -95,6 +95,11 @@ module.exports = React.createClass({
 		this.updateValues()
 	},
 
+	onUnitChange(event) {
+		console.log('Fire p==* [FormUnitsAndGoals.onUnitChange]', this.state)
+		this.updateValues()
+	},
+
 	// Изменилась настройка ППР
 	onPprCheckChange(event) {
 		console.log('Fire p==* [FormUnitsAndGoals.onPprCheckChange]', event)
@@ -108,9 +113,11 @@ module.exports = React.createClass({
 	//
 	updateValues() {
 		console.log('Fire p==* [FormUnitsAndGoals.updateValues]')
+
 		Store.Actions.updateValues(
 			{
 				project_name: this.refs.project_name.value,
+				unit_expense: this.refs.unit_expense.value,
 				result_name: this.refs.result_name.value,
 				unit_result: this.refs.unit_result.value,
 				kpr: this.refs.kpr.value,
@@ -119,7 +126,6 @@ module.exports = React.createClass({
 				pn: this.refs.pn.value,
 				po: this.refs.po.value,
 				prpz: this.refs.prpz.value,
-				currency: this.refs.currency.value,
 				plan_range: this.refs.plan_range.value,
 				plan_count: this.refs.plan_count.value,
 				plan_method: this.refs.plan_method.value,
@@ -154,6 +160,7 @@ module.exports = React.createClass({
 
 				<form onSubmit={this.onFormSubmit} role="form" className="form-horizontal item" style={{padding: '20px 15px'}}>
 					<Input ref="project_name" data={goals.project_name}/>
+					<Select ref="unit_expense" data={units.unit_expense} onChange={this.onUnitChange}/>
 
 					<h3 className="liner">Цель проекта</h3>
 					<Input ref="result_name" data={goals.result_name}/>
@@ -169,8 +176,6 @@ module.exports = React.createClass({
 
 					<h3 className="liner">Бюджет проекта</h3>
 					<Input ref="prpz" data={goals.prpz} onChange={this.onValueChange}/>
-					{/*<Input data={{title: 'Порядок изменения расходов'}}/>*/}
-					<Select ref="currency" data={goals.currency}/>
 
 					<h3 className="liner">Дополнительно</h3>
 					<Dropdown ref="plan_range" data={goals.plan_range} onChange={this.onValueChange}/>

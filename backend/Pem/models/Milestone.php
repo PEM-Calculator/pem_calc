@@ -239,8 +239,8 @@ class Milestone extends \Pem\Models\BaseObject
 			return 3000;
 
 		// 2 правило. Если указана ПД, то должна быть указана КПРплн
-		if($this->pd && !$this->kpr_plan)
-			return 3001;
+		//if($this->pd && !$this->kpr_plan)
+		//	return 3001;
 
 		// Все OK
 		return true;
@@ -252,9 +252,8 @@ class Milestone extends \Pem\Models\BaseObject
 	 */
 	public function calculate() {
 		// КРП
-		$this->krp = (!$this->ppr)
-			? 1.0
-			: $this->prpz / $this->ppr;
+		//$this->krp = $this->task->krp;
+		$this->krp = 1.0;
 
 		// сначала валидация
 		$result = $this->validateMe();

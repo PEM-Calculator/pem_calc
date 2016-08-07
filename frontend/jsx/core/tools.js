@@ -265,8 +265,10 @@ let Tools = {
 			week_day_short_name	: this.week_day_short_names[week_day-1],
 			week_number			: week_number,
 			date				: [this.padLeft(day, 2, '0'), this.padLeft(month, 2, '0'), year].join('.'),
+			date_sql			: [year, this.padLeft(month, 2, '0'), this.padLeft(day, 2, '0')].join('-'),
 			quarter_number		: Math.floor((month-1) / 3) + 1,
 			half_year_number	: Math.floor((month-1) / 6) + 1,
+			time				: date_object.getTime(),
 		}
 	},
 
@@ -328,6 +330,7 @@ let Tools = {
 
 	// форматирует число с разбивкой по тысячам
 	formatNum(num) {
+		console.log('NUM***', num)
 		let parts = (num + '').split('.')
 		parts[0] = parts[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
 		return parts.join('.')
@@ -337,11 +340,11 @@ let Tools = {
 	formatShare(num, config) {
 		if(!num)
 			return null
-
+			console.log('SHARE***', num)
 		if(config == 1)
-			return (num * 100).toFixed(0) + '%'
+			return (num * 100).toFixed(1) + '%'
 		else
-			return (num * 1.0).toFixed(2)
+			return (num * 1.0).toFixed(3)
 	},
 
 	// парсит значение, вернет число либо null

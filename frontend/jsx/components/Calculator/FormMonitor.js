@@ -91,7 +91,7 @@ module.exports = React.createClass({
 				max_period_index--
 			}
 			else {
-				break;
+				break
 			}
 		}
 
@@ -120,10 +120,9 @@ module.exports = React.createClass({
         // обновляю заголовок
         window.PEM.updateTitle(goals.project_name.value)
 
-        console.log(result)
+        console.log('RESULT', result)
 
-        let currency_value = goals.currency.value,
-            currency_title = (goals.currency.range[currency_value] || {}).title,
+        let expense_title = units.unit_expense.range[units.unit_expense.value].value,
             result_value = units.unit_result.value,
             plan_percent = 100 / goals.kpr.value * result.sum_kpr_plan,
             fact_percent = 100 / goals.kpr.value * result.sum_kpr_fact,
@@ -148,10 +147,8 @@ module.exports = React.createClass({
                     <tr>
                         <td style={{width: '120px'}}>Период оценки:</td>
                         <td>
-                            { period_index > 0 ? <a className="glyphicon glyphicon-chevron-left pointer"
-                                                    onClick={ this.onPrevPeriodClick }/> : '' }
-                            <span className="value-block" style={{margin: '0 10px', padding: '4px'}}>{ pn.date }
-                                - { period_po.date }</span>
+                            { period_index > 0 ? <a className="glyphicon glyphicon-chevron-left pointer" onClick={ this.onPrevPeriodClick }/> : '' }
+                            <span className="value-block" style={{margin: '0 10px', padding: '4px'}}>{ pn.date } - { period_po.date }</span>
                             { period_index < max_period_index ? <a className="glyphicon glyphicon-chevron-right pointer"
                                                                    onClick={ this.onNextPeriodClick }/> : '' }
                         </td>
@@ -160,9 +157,9 @@ module.exports = React.createClass({
                 </table>
 
                 <div className="white-form" id="monitor-data">
-                    {/*************
-                     Результат
-                     *************/}
+                    {/**********************************************************
+                    	Результат
+                    **********************************************************/}
                     <div className="item header row">
                         <div className="col-xs-6 col-sm-6 left d1">Результат</div>
                         <div className="col-sm-6 center d2">ЭФФЕКТИВНОСТЬ РЕЗУЛЬТАТА (Э = Кс х Кр)</div>
@@ -181,9 +178,9 @@ module.exports = React.createClass({
                             <br/>
                             <div className="row">
                                 <div className="col-xs-7 col-sm-5 col-md-5 left">
-                                    <div>Целевое значение КПР</div>
-                                    <div className="small">Плановое выполнение</div>
-                                    <div className="small">Фактическое выполнение</div>
+                                    <div className="hide-text">Целевое значение КПР</div>
+                                    <div className="small hide-text">Плановое выполнение</div>
+                                    <div className="small hide-text">Фактическое выполнение</div>
                                 </div>
                                 <div className="col-xs-7 col-sm-6 col-md-6 value-block">
                                     <div>{ goals.kpr.value } { result_value }</div>
@@ -191,22 +188,63 @@ module.exports = React.createClass({
                                     <div className="small">{ fact_percent.toFixed(2) + '%' }</div>
                                 </div>
                             </div>
+							{/* Дополнительное поле ППР */}
+							{ goals.ppr_check.value && goals.ppr.value ? <div>
+								<br/>
+								<div className="row">
+	                                <div className="col-xs-7 col-sm-5 col-md-5 left">
+	                                    <div className="hide-text">Плановая прибыль</div>
+	                                </div>
+	                                <div className="col-xs-7 col-sm-6 col-md-6 value-block">
+	                                    <div>
+											{ goals.ppr.value }
+											&nbsp;
+											{ expense_title }
+										</div>
+	                                </div>
+	                            </div>
+							</div> : '' }
                         </div>
 
                         {/* right */}
                         <div className="col-xs-6 col-sm-6 col-md-6 d2">
                             <div className="row">
                                 <div className="col-xs-0 col-sm-1 col-md-1"/>
-                                <div className="col-xs-12 col-sm-11 col-md-11 center">
-                                    <span className="effily-value">{ Tools.formatShare(result.sum_eff, result_method) }</span>
+                                <div className="col-xs-12 col-sm-11 col-md-11">
+									<div className="center">
+                                    	<span className="effily-value">{ Tools.formatShare(result.sum_eff, result_method) }</span>
+									</div>
+									{/* Дополнительное поле ППР */}
+									{ goals.ppr_check.value && goals.ppr.value ? <div>
+										<div className="row">
+	                                        <div className="col-sm-8 col-md-8 left hide-text">
+	                                            Прогноз по прибыли
+	                                        </div>
+	                                        <div className="col-sm-4 col-md-4 right">
+	                                            { Tools.formatNum(result.frc_pr) }
+												&nbsp;
+												{ expense_title }
+	                                        </div>
+	                                    </div>
+										<div className="row">
+	                                        <div className="col-sm-8 col-md-8 left hide-text">
+	                                            Прогноз по эффективной прибыли
+	                                        </div>
+	                                        <div className="col-sm-4 col-md-4 right">
+	                                            { Tools.formatNum(result.frc_pre) }
+												&nbsp;
+												{ expense_title }
+	                                        </div>
+	                                    </div>
+									</div> : '' }
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/********
-                     Срок
-                     ********/}
+                    {/**********************************************************
+                    	Срок
+                    **********************************************************/}
                     <div className="item header row">
                         <div className="col-sm-6 left d1">Срок</div>
                         <div className="col-sm-6 center d2">ЭФФЕКТИВНОСТЬ ПО СРОКУ (Кс)</div>
@@ -215,7 +253,7 @@ module.exports = React.createClass({
                         {/* left */}
                         <div className="col-sm-6 col-md-6 center d1">
                             <div className="row">
-                                <div className="col-sm-5 col-md-5 left">Дата начала / окончания</div>
+                                <div className="col-sm-5 col-md-5 left hide-text">Дата начала / окончания</div>
                                 <div className="col-sm-6 col-md-6">
                                     <div className="row">
                                         <div className="col-sm-6 col-md-5 center value-block">{ pn.date }</div>
@@ -227,8 +265,8 @@ module.exports = React.createClass({
                             <br/>
                             <div className="row">
                                 <div className="col-sm-5 col-md-5 left">
-                                    <div>Длительность</div>
-                                    <div className="small">Истекло времени</div>
+                                    <div className="hide-text">Длительность</div>
+                                    <div className="small hide-text">Истекло времени</div>
                                 </div>
                                 <div className="col-sm-6 col-md-6 value-block">
                                     <div>{ goals.pd.value } дней</div>
@@ -246,7 +284,7 @@ module.exports = React.createClass({
                                         <span className="effily-value">{ Tools.formatShare(result.sum_ks, result_method) }</span>
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-8 col-md-8 left">
+                                        <div className="col-sm-8 col-md-8 left hide-text">
                                             Прогноз фактической длительности задачи (Дней)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
@@ -254,7 +292,7 @@ module.exports = React.createClass({
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-8 col-md-8 left">
+                                        <div className="col-sm-8 col-md-8 left hide-text">
                                             Прогноз даты фактического окончания
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
@@ -266,9 +304,9 @@ module.exports = React.createClass({
                         </div>
                     </div>
 
-                    {/***********
-                     Расходы
-                     ***********/}
+                    {/**********************************************************
+                    	Расходы
+                    **********************************************************/}
                     <div className="item header row">
                         <div className="col-sm-6 col-md-6 left d1">Расходы</div>
                         <div className="col-sm-6 col-md-6 center d2">ЭФФЕКТИВНОСТЬ РАСХОДОВ (Кр)</div>
@@ -278,13 +316,13 @@ module.exports = React.createClass({
                         <div className="col-sm-6 col-md-6 center d1">
                             <div className="row">
                                 <div className="col-sm-5 col-md-5 left">
-                                    <div>Бюджет расходов</div>
-                                    <div className="small">Плановый объем</div>
-                                    <div className="small">Освоенный объем</div>
-                                    <div className="small">Фактические расходы</div>
+                                    <div className="hide-text">Бюджет расходов</div>
+                                    <div className="small hide-text">Плановый объем</div>
+                                    <div className="small hide-text">Освоенный объем</div>
+                                    <div className="small hide-text">Фактические расходы</div>
                                 </div>
                                 <div className="col-sm-6 col-md-6 value-block">
-                                    <div>{ Tools.formatNum(goals.prpz.value) } { currency_title }</div>
+                                    <div>{ Tools.formatNum(goals.prpz.value) } { expense_title }</div>
                                     <div className="small">{ prpz_percent.toFixed(2) + '%' }</div>
                                     <div className="small">{ prfz_percent.toFixed(2) + '%' }</div>
                                     <div className="small">{ frfz_percent.toFixed(2) + '%' }</div>
@@ -301,19 +339,23 @@ module.exports = React.createClass({
                                         <span className="effily-value">{ Tools.formatShare(result.sum_kr, result_method) }</span>
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-8 col-md-8 left">
+                                        <div className="col-sm-8 col-md-8 left hide-text">
                                             Прогноз фактических расходов на задачу (Руб.)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
                                             { Tools.formatNum((result.frc_frfz * 1).toFixed(2)) }
+											&nbsp;
+											{ expense_title }
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-8 col-md-8 left">
+                                        <div className="col-sm-8 col-md-8 left hide-text">
                                             Прогноз (+перерасход / -экономии) (Руб.)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
                                             { Tools.formatNum((result.frc_frfz - goals.prpz.value).toFixed(2)) }
+											&nbsp;
+											{ expense_title }
                                         </div>
                                     </div>
                                 </div>
