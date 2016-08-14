@@ -330,7 +330,7 @@ let Tools = {
 
 	// форматирует число с разбивкой по тысячам
 	formatNum(num) {
-		console.log('NUM***', num)
+		//console.log('NUM***', num)
 		let parts = (num + '').split('.')
 		parts[0] = parts[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
 		return parts.join('.')
@@ -338,13 +338,15 @@ let Tools = {
 
 	// формирует значение доли
 	formatShare(num, config) {
-		if(!num)
-			return null
-			console.log('SHARE***', num)
-		if(config == 1)
+		if(num === null) {
+			return '-'
+		}
+		if(config == 1) {
 			return (num * 100).toFixed(1) + '%'
-		else
+		}
+		else {
 			return (num * 1.0).toFixed(3)
+		}
 	},
 
 	// парсит значение, вернет число либо null

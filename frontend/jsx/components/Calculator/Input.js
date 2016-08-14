@@ -137,8 +137,6 @@ module.exports = React.createClass({
 		let type = this.data.type,
 			unit = this.data.unit
 
-		console.log('*** UNIT', unit)
-
 		return (
 			<div className={'form-group' + (this.data.error ? ' has-error' : '')}>
 

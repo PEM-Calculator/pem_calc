@@ -85,51 +85,51 @@ class Milestone extends \Pem\Models\BaseObject
 
 		return [
 			// входные показатели
-			'kpr_plan'	=> $this->kpr_plan,
-			'prpz'		=> $this->prpz,
-			'pd'		=> $this->pd,
-			'kpr_fact'	=> $this->kpr_fact,
-			'frfz'		=> $this->frfz,
-			'fd'		=> $this->fd,
+			'kpr_plan'	=> !is_null($this->kpr_plan) ? doubleval($this->kpr_plan) : null,
+			'prpz'		=> !is_null($this->prpz) ? doubleval($this->prpz) : null,
+			'pd'		=> !is_null($this->pd) ? doubleval($this->pd) : null,
+			'kpr_fact'	=> !is_null($this->kpr_fact) ? doubleval($this->kpr_fact) : null,
+			'frfz'		=> !is_null($this->frfz) ? doubleval($this->frfz) : null,
+			'fd'		=> !is_null($this->fd) ? doubleval($this->fd) : null,
 
 			// расчетные показатели
-			'prfz'		=> $this->prfz,
-			'kd'		=> $this->kd,
-			'ks'		=> $this->ks,
-			'kr'		=> $this->kr,
-			'eff'		=> $this->eff,
+			'prfz'		=> !is_null($this->prfz) ? doubleval($this->prfz) : null,
+			'kd'		=> !is_null($this->kd) ? doubleval($this->kd) : null,
+			'ks'		=> !is_null($this->ks) ? doubleval($this->ks) : null,
+			'kr'		=> !is_null($this->kr) ? doubleval($this->kr) : null,
+			'eff'		=> !is_null($this->eff) ? doubleval($this->eff) : null,
 
 			// Накопительные показатели
-			'sum_kpr_plan' => $this->sum_kpr_plan,
-			'sum_prpz' => $this->sum_prpz,
-			'sum_pd' => $this->sum_pd,
-			'sum_kpr_fact' => $this->sum_kpr_fact,
-			'sum_frfz' => $this->sum_frfz,
-			'sum_fd' => $this->sum_fd,
+			'sum_kpr_plan' => !is_null($this->sum_kpr_plan) ? doubleval($this->sum_kpr_plan) : null,
+			'sum_prpz' => !is_null($this->sum_prpz) ? doubleval($this->sum_prpz) : null,
+			'sum_pd' => !is_null($this->sum_pd) ? doubleval($this->sum_pd) : null,
+			'sum_kpr_fact' => !is_null($this->sum_kpr_fact) ? doubleval($this->sum_kpr_fact) : null,
+			'sum_frfz' => !is_null($this->sum_frfz) ? doubleval($this->sum_frfz) : null,
+			'sum_fd' => !is_null($this->sum_fd) ? doubleval($this->sum_fd) : null,
 
 			// Накопительные расчетные показатели
-			'sum_prfz' => $this->sum_prfz,
-			'sum_kd' => $this->sum_kd,
-			'sum_ks' => $this->sum_ks,
-			'sum_kr' => $this->sum_kr,
-			'sum_eff' => $this->sum_eff,
+			'sum_prfz' => !is_null($this->sum_prfz) ? doubleval($this->sum_prfz) : null,
+			'sum_kd' => !is_null($this->sum_kd) ? doubleval($this->sum_kd) : null,
+			'sum_ks' => !is_null($this->sum_ks) ? doubleval($this->sum_ks) : null,
+			'sum_kr' => !is_null($this->sum_kr) ? doubleval($this->sum_kr) : null,
+			'sum_eff' => !is_null($this->sum_eff) ? doubleval($this->sum_eff) : null,
 
 			// Прогнозные показатели (forecast)
-			'frc_fd' => $this->frc_fd,
-			'frc_frfz' => $this->frc_frfz,
-			'frc_pr' => $this->frc_pr,
-			'frc_pre' => $this->frc_pre,
+			'frc_fd' => !is_null($this->frc_fd) ? doubleval($this->frc_fd) : null,
+			'frc_frfz' => !is_null($this->frc_frfz) ? doubleval($this->frc_frfz) : null,
+			'frc_pr' => !is_null($this->frc_pr) ? doubleval($this->frc_pr) : null,
+			'frc_pre' => !is_null($this->frc_pre) ? doubleval($this->frc_pre) : null,
 
 			// Показатели отклонения по накопительным (deviation)
 			// Абсолютные (absolute)
-			'deva_fd' => $this->deva_fd,
-			'deva_frfz' => $this->deva_frfz,
-			'deva_kpr' => $this->deva_kpr,
+			'deva_fd' => !is_null($this->deva_fd) ? doubleval($this->deva_fd) : null,
+			'deva_frfz' => !is_null($this->deva_frfz) ? doubleval($this->deva_frfz) : null,
+			'deva_kpr' => !is_null($this->deva_kpr) ? doubleval($this->deva_kpr) : null,
 
 			// Относительные (relative)
-			'devr_fd' => $this->devr_fd,
-			'devr_frfz' => $this->devr_frfz,
-			'devr_kpr' => $this->devr_kpr,
+			'devr_fd' => !is_null($this->devr_fd) ? doubleval($this->devr_fd) : null,
+			'devr_frfz' => !is_null($this->devr_frfz) ? doubleval($this->devr_frfz) : null,
+			'devr_kpr' => !is_null($this->devr_kpr) ? doubleval($this->devr_kpr) : null,
 		];
 	}
 
@@ -138,13 +138,6 @@ class Milestone extends \Pem\Models\BaseObject
 	//		Triggers
 	//
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	// Inserting/Updating
-	public function beforeValidation() {
-		$this->calculate();
-
-		parent::beforeValidation();
-	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
@@ -252,45 +245,107 @@ class Milestone extends \Pem\Models\BaseObject
 	 */
 	public function calculate() {
 		// КРП
-		//$this->krp = $this->task->krp;
-		$this->krp = 1.0;
+		$krp = doubleval($this->task->krp);
+		// КРП берем из таска
 
 		// сначала валидация
 		$result = $this->validateMe();
-		if($result !== true)
+		if($result !== true) {
 			return $result;
+		}
 
 		// ПРФЗ
-		$this->prfz = (!$this->kpr_plan || is_null($this->kpr_fact) || is_null($this->prpz))
+		$prfz = (!$this->kpr_plan || is_null($this->kpr_fact) || is_null($this->prpz))
 			? null
 			: $this->kpr_fact / $this->kpr_plan * $this->prpz;
 
 		// Кд
-		if(!$this->fd || is_null($this->pd))
-			$this->kd = null;
-		else
-			$this->kd = ($this->pd >= $this->fd)
-				? 1.0
-				: ($this->pd / $this->fd);
+		if(!$this->fd || !$this->pd) {
+			$kd = null;
+		}
+		else {
+			$kd = ($this->pd >= $this->fd) ? 1.0 : ($this->pd / $this->fd);
+		}
 
-		// Кс
-		$this->ks = (!$this->prpz || is_null($this->prfz) || is_null($this->frfz) || is_null($this->kd))
-			? null
-			: $this->prfz / $this->prpz * $this->kd;
-
-		// Кр
-		$this->kr = (is_null($this->frfz) || is_null($this->kpr_fact)
-			? null
-			: (!$this->prfz && !$this->frfz
-				? 1.0
-				: (!$this->prfz
+		//
+		// Обработка частных случаев
+		//
+		if(!$this->kpr_plan) {
+			// КПРплан = 0
+			if($this->kpr_fact < 0) {
+				// КПРплан = 0, КПРфакт < 0
+				$ks = 0.0;
+			}
+			else {
+				// КПРплан = 0, КПРфакт >= 0
+				$ks = 1.0;
+			}
+			// Кр
+			if(!$this->prpz) {
+				if(!$this->frfz) {
+					// КПРплан = 0, ПРПЗ = 0, ФРФЗ = 0
+					$kr = 1.0;
+				}
+				else {
+					// КПРплан = 0, ПРПЗ = 0, ФРФЗ <> 0
+					$kr = 0.0;
+				}
+			}
+			else {
+				// КПРплан = 0, ПРПЗ <> 0
+				$kr = (!$this->prpz
 					? null
-					: 1 + (1 - $this->frfz / $this->prfz) * $this->krp)));
+					: 1.0 + (1.0 - $this->frfz / $this->prpz) * $krp);
+			}
+		}
+		else {
+			// КПРплан > 0
+			if(!$this->prpz) {
+				// КПРплан > 0, ПРПЗ = 0
+				$ks = ($this->kpr_fact / $this->kpr_plan);
+				if($this->kpr_fact && !$this->frfz) {
+					$kr = 1.0;
+				}
+				else {
+					$kr = 0.0;
+				}
+			}
+			else {
+				if(!$this->kpr_fact) {
+					// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0
+					$ks = 0.0;
+					if(!$this->frfz) {
+						// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0, ФРФЗ = 0
+						$kr = 1.0;
+					}
+					else {
+						// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0, ФРФЗ > 0
+						$kr = 0.0;
+					}
+				}
+				else {
+					// КПРплан > 0, ПРПЗ > 0, КПРплан <> 0
+					$ks = $prfz / $this->prpz * $kd;
+					$kr = (!$prfz && !$this->frfz
+						? 1.0
+						: (!$prfz
+							? null
+							: 1.0 + (1.0 - $this->frfz / $prfz) * $krp));
+				}
+			}
+		}
 
 		// Эфф
-		$this->eff = (is_null($this->ks) || is_null($this->kr))
+		$eff = (is_null($ks) || is_null($kr))
 			? null
-			: $this->ks * $this->kr;
+			: $ks * $kr;
+
+		$this->krp = $krp;
+		$this->prfz = $prfz;
+		$this->kd = $kd;
+		$this->ks = $ks;
+		$this->kr = $kr;
+		$this->eff = $eff;
 
 		return true;
 	}

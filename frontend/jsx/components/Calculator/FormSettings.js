@@ -65,7 +65,7 @@ module.exports = React.createClass({
 
 		Store.Actions.startDemo(() => {
 			// обновляю данные
-			this.updateDisables()
+			History.gotoMonitor()
 		})
 	},
 
@@ -185,12 +185,9 @@ module.exports = React.createClass({
 
 					{/* кнопки сохранить, отмена, сбросить */}
 					<button type="submit" className="btn btn-primary">{this.state.db.config.isNew ? 'Создать задачу' : 'Сохранить изменения'}</button>
-					{/*&nbsp;
-					{this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onStartDemo}>Заполнить демо</button>}
+					{ this.state.db.config.isNew && <button type="button" className="btn" onClick={ this.onStartDemo }>Заполнить демо</button> }
 					&nbsp;
-					{!this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReload}>Отменить изменения</button>}*/}
-					&nbsp;
-					{!this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button>}
+					{ !this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button> }
 				</form>
 				{this.props.children}
 			</div>

@@ -269,12 +269,26 @@ module.exports = React.createClass({
 			results = this.state.db.results,
 			td1_style = {width: '150px'},
 			td3_style = {width: '150px'},
-			result_method = goals.result_method.value
+			result_method = goals.result_method.value,
+			min_period_index = 0,
+            max_period_index = results.length - 1
+
+		// надо проверить забитость периодов по факту
+		for(let i = max_period_index; i >= min_period_index; i--)
+		{
+			if(results[i].kpr_fact === null && results[i].frfz === null) {
+				max_period_index--
+			}
+			else {
+				break
+			}
+		}
 
 		if(!periods || periods.length == 0)
 			return (
 				<div>
-					<h2>Необходимо заполнить настройки</h2>
+					<p>Необходимо заполнить настройки.</p>
+					<a href="/settings" className="alert-link">Перейти в Настройки</a>
 				</div>
 			)
 
@@ -495,43 +509,37 @@ module.exports = React.createClass({
 				//
 				eff_td.push(
 					<div key={key+'1'} className="period-item-half center middle">
-						{Tools.formatShare(result.eff, result_method) || '-'}
+						{ key > max_period_index ? '-' : Tools.formatShare(result.eff, result_method) }
 					</div>
 				)
 				eff_td.push(
 					<div key={key+'2'} className="period-item-half center middle">
 						<b>
-							{Tools.formatShare(result.eff, result_method)
-								? Tools.formatShare(result.sum_eff, result_method) || '-'
-								: '-'}
+							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_eff, result_method) }
 						</b>
 					</div>
 				)
 				ks_td.push(
 					<div key={key+'1'} className="period-item-half center middle">
-						{Tools.formatShare(result.ks, result_method) || '-'}
+						{ key > max_period_index ? '-' : Tools.formatShare(result.ks, result_method) }
 					</div>
 				)
 				ks_td.push(
 					<div key={key+'2'} className="period-item-half center middle">
 						<b>
-							{Tools.formatShare(result.ks, result_method)
-								? Tools.formatShare(result.sum_ks, result_method) || '-'
-								: '-'}
+							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_ks, result_method) }
 						</b>
 					</div>
 				)
 				kr_td.push(
 					<div key={key+'1'} className="period-item-half center middle">
-						{Tools.formatShare(result.kr, result_method) || '-'}
+						{ key > max_period_index ? '-' : Tools.formatShare(result.kr, result_method) }
 					</div>
 				)
 				kr_td.push(
 					<div key={key+'2'} className="period-item-half center middle">
 						<b>
-							{Tools.formatShare(result.kr, result_method)
-								? Tools.formatShare(result.sum_kr, result_method) || '-'
-								: '-'}
+							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_kr, result_method) }
 						</b>
 					</div>
 				)
@@ -902,6 +910,7 @@ module.exports = React.createClass({
 							</tbody>
 						</table>
 					</div>
+
 					{/* Плановые показатели */}
 					<form onSubmit={this.onPlanSaveClick} className="item">
 						<table className="values-table">
@@ -921,7 +930,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{Tools.formatNum(kpr_plan_sum)}
+										{Tools.formatNum(kpr_plan_sum.toFixed(2))}
 									</td>
 								</tr>
 								<tr>
@@ -934,7 +943,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{kpr_plan_percent_sum ? kpr_plan_percent_sum.toFixed(0) + '%' : ''}
+										{kpr_plan_percent_sum ? kpr_plan_percent_sum.toFixed(1) + '%' : ''}
 									</td>
 								</tr>
 								<tr>
@@ -947,7 +956,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{Tools.formatNum(prpz_sum)}
+										{Tools.formatNum(prpz_sum.toFixed(2))}
 									</td>
 								</tr>
 								<tr>
@@ -958,7 +967,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{prpz_percent_sum ? prpz_percent_sum.toFixed(0) + '%' : ''}
+										{prpz_percent_sum ? prpz_percent_sum.toFixed(1) + '%' : ''}
 									</td>
 								</tr>
 							</tbody>
@@ -981,7 +990,7 @@ module.exports = React.createClass({
 										<h3>Факт</h3>
 									</td>
 									<td className="left middle">
-										{this.isEditFact
+										{ this.isEditFact
 											? (
 												<div>
 													<button type="button" className="btn btn-xs btn-primary" onClick={this.onFactSaveClick}>Сохранить</button>
@@ -989,7 +998,7 @@ module.exports = React.createClass({
 													<button type="button" className="btn btn-xs btn-primary" onClick={this.onFactEditAbortClick}>Отменить</button>
 												</div>
 											)
-											: <button type="button" className="btn btn-xs btn-primary" onClick={this.onFactEditModeClick}>Изменить</button>}
+											: <button type="button" className="btn btn-xs btn-primary" onClick={this.onFactEditModeClick}>Изменить</button> }
 									</td>
 								</tr>
 							</tbody>
@@ -1014,7 +1023,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{Tools.formatNum(kpr_fact_sum)}
+										{Tools.formatNum(kpr_fact_sum.toFixed(2))}
 									</td>
 								</tr>
 								<tr>
@@ -1027,7 +1036,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{kpr_fact_percent_sum ? kpr_fact_percent_sum.toFixed(0) + '%' : ''}
+										{kpr_fact_percent_sum ? kpr_fact_percent_sum.toFixed(1) + '%' : ''}
 									</td>
 								</tr>
 								<tr>
@@ -1040,7 +1049,7 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle big-value">
-										{Tools.formatNum(frfz_sum)}
+										{Tools.formatNum(frfz_sum.toFixed(2))}
 									</td>
 								</tr>
 								<tr>
@@ -1051,14 +1060,15 @@ module.exports = React.createClass({
 										</div>
 									</td>
 									<td className="center middle">
-										{frfz_percent_sum ? frfz_percent_sum.toFixed(0) + '%' : ''}
+										{frfz_percent_sum ? frfz_percent_sum.toFixed(1) + '%' : ''}
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</form>
+
 					{/* Эффективность */}
-					{ results.length > 0 && <div className="item" style={{ paddingTop: '50px' }}>
+					{ results.length > 0 && max_period_index >= 0 && <div className="item" style={{ paddingTop: '50px' }}>
 						<table className="values-table">
 							<colgroup>
 								<col style={td1_style}/>

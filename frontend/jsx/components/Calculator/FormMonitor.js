@@ -78,7 +78,7 @@ module.exports = React.createClass({
 
         let config = this.state.db.config,
             units = this.state.db.units,
-            goals = this.state.db.goals,
+            goals = this.state.db.goals || {},
             periods = this.state.db.periods,
             results = this.state.db.results,
             min_period_index = 0,
@@ -87,7 +87,7 @@ module.exports = React.createClass({
 		// надо проверить забитость периодов по факту
 		for(let i = max_period_index; i >= min_period_index; i--)
 		{
-			if(results[i].kpr_fact === null || results[i].frfz === null) {
+			if(results[i].kpr_fact === null && results[i].frfz === null) {
 				max_period_index--
 			}
 			else {
@@ -95,18 +95,8 @@ module.exports = React.createClass({
 			}
 		}
 
-        // устанавливаю период
-        if (this.period_index === null) {
-            this.period_index = max_period_index
-        }
-
-        let period_index = this.period_index,
-            result = results[period_index],
-            period = periods[period_index]
-
-        console.log('RENDER MONITOR', results, results.length)
-
-        if (!results || !results.length) {
+		// заполнен ли ФАКТ
+		if (!results || !results.length || max_period_index == -1) {
             return (
                 <div className="alert alert-info">
                     <p>
@@ -117,10 +107,19 @@ module.exports = React.createClass({
             )
         }
 
-        // обновляю заголовок
-        window.PEM.updateTitle(goals.project_name.value)
+        // устанавливаю период
+        if (this.period_index === null) {
+            this.period_index = max_period_index
+        }
 
-        console.log('RESULT', result)
+        let period_index = this.period_index,
+            result = results[period_index],
+            period = periods[period_index]
+
+        // обновляю заголовок
+		// обновляю заголовок
+		let title = (goals.project_name || {}).value || '*Новый проект'
+		window.PEM.updateTitle(title)
 
         let expense_title = units.unit_expense.range[units.unit_expense.value].value,
             result_value = units.unit_result.value,
@@ -136,9 +135,10 @@ module.exports = React.createClass({
             period_po = Tools.parseDate(new Date(period.po.value)),
             result_method = goals.result_method.value,
             // прогнозная дата окончания
-            day_length = 86400*1000,
-            frc_fd = Math.floor(result.frc_fd),
-            frc_po = Tools.parseDate(new Date(goals.pn.value + frc_fd * day_length))
+            day_length = 86400000,
+            frc_fd = result.frc_fd,
+			add_day = (Math.floor(frc_fd) < frc_fd ? 1 : 0),
+            frc_po = Tools.parseDate(new Date(goals.pn.value + (Math.floor(frc_fd) - 1 + add_day) * day_length))
 
         return (
             <div>
@@ -221,7 +221,7 @@ module.exports = React.createClass({
 	                                            Прогноз по прибыли
 	                                        </div>
 	                                        <div className="col-sm-4 col-md-4 right">
-	                                            { Tools.formatNum(result.frc_pr) }
+	                                            { Tools.formatNum(result.frc_pr.toFixed(2)) }
 												&nbsp;
 												{ expense_title }
 	                                        </div>
@@ -231,7 +231,7 @@ module.exports = React.createClass({
 	                                            Прогноз по эффективной прибыли
 	                                        </div>
 	                                        <div className="col-sm-4 col-md-4 right">
-	                                            { Tools.formatNum(result.frc_pre) }
+	                                            { Tools.formatNum(result.frc_pre.toFixed(2)) }
 												&nbsp;
 												{ expense_title }
 	                                        </div>
@@ -288,7 +288,7 @@ module.exports = React.createClass({
                                             Прогноз фактической длительности задачи (Дней)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
-                                            { Tools.formatNum(frc_fd) }
+                                            { !frc_fd ? '∞' : Tools.formatNum(frc_fd.toFixed(2)) }
                                         </div>
                                     </div>
                                     <div className="row">
@@ -296,7 +296,7 @@ module.exports = React.createClass({
                                             Прогноз даты фактического окончания
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
-                                            { frc_po.date }
+                                            { !frc_fd ? '∞' : frc_po.date }
                                         </div>
                                     </div>
                                 </div>
@@ -340,7 +340,7 @@ module.exports = React.createClass({
                                     </div>
                                     <div className="row">
                                         <div className="col-sm-8 col-md-8 left hide-text">
-                                            Прогноз фактических расходов на задачу (Руб.)
+                                            Прогноз фактических расходов на задачу
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
                                             { Tools.formatNum((result.frc_frfz * 1).toFixed(2)) }
@@ -350,7 +350,7 @@ module.exports = React.createClass({
                                     </div>
                                     <div className="row">
                                         <div className="col-sm-8 col-md-8 left hide-text">
-                                            Прогноз (+перерасход / -экономии) (Руб.)
+                                            Прогноз (+перерасход / -экономии)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
                                             { Tools.formatNum((result.frc_frfz - goals.prpz.value).toFixed(2)) }

@@ -104,4 +104,3 @@ function error($content, $code = 500, $status = 'Application error') {
 	$response->send();
 	exit($code);
 }
-

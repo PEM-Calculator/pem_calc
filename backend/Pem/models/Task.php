@@ -75,14 +75,6 @@ class Task extends \Pem\Models\BaseObject
     //
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    // Inserting/Updating
-    public function beforeValidation()
-    {
-        $this->calculate();
-
-        parent::beforeValidation();
-    }
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //
     //		Getters
@@ -175,6 +167,8 @@ class Task extends \Pem\Models\BaseObject
             ? 1.0
             : $this->prpz / $this->ppr;
 
+		$this->save();
+
 		$result = $this->calculateItems();
         if ($result !== true) return $result;
 
@@ -192,6 +186,7 @@ class Task extends \Pem\Models\BaseObject
         $E_kpr_fact = 0.0;
         $E_frfz = 0.0;
         $E_fd = 0.0;
+		$krp = doubleval($this->krp);
 
         // по каждой КТ суммирую и считаю
         foreach ($this->getMilestones() as $ms) {
@@ -210,44 +205,95 @@ class Task extends \Pem\Models\BaseObject
             $E_frfz += $ms->frfz;
             $E_fd += $ms->fd;
 
-            // расчет промежуточных итогов для каждой вехи
-            if (!$E_fd) {
-                $E_kd = null;
-            } else {
-                $E_kd = ($E_pd > $E_fd) ? 1.0 : $E_pd / $E_fd;
-            }
+			//
+			// расчет накопительных эффективностей
+			//
 
-            // ПРФЗ
-            $E_prfz = (!$E_kpr_plan || is_null($E_kpr_fact) || is_null($E_prpz))
+			// ПРФЗ
+			$E_prfz = (!$E_kpr_plan || is_null($E_kpr_fact) || is_null($E_prpz))
                 ? null
                 : $E_kpr_fact / $E_kpr_plan * $E_prpz;
 
-            // Кд
-            if (!$E_fd || is_null($E_pd))
-                $E_kd = null;
-            else
-                $E_kd = ($E_pd >= $E_fd)
-                    ? 1.0
-                    : ($E_pd / $E_fd);
+			// Кд
+			if(!$E_fd || !$E_pd) {
+				$E_kd = null;
+            }
+			else {
+                $E_kd = ($E_pd > $E_fd) ? 1.0 : $E_pd / $E_fd;
+            }
 
-            // Кс
-            $E_ks = (!$E_prpz || is_null($E_prfz) || is_null($E_frfz) || is_null($E_kd))
-                ? null
-                : $E_prfz / $E_prpz * $E_kd;
+			//
+			// Обработка частных случаев
+			//
+			if(!$E_kpr_plan) {
+				// КПРплан = 0
+				if($E_kpr_fact < 0) {
+					// КПРплан = 0, КПРфакт < 0
+					$E_ks = 0.0;
+				}
+				else {
+					// КПРплан = 0, КПРфакт >= 0
+					$E_ks = 1.0;
+				}
+				// Кр
+				if(!$E_prpz) {
+					if(!$E_frfz) {
+						// КПРплан = 0, ПРПЗ = 0, ФРФЗ = 0
+						$E_kr = 1.0;
+					}
+					else {
+						// КПРплан = 0, ПРПЗ = 0, ФРФЗ <> 0
+						$E_kr = 0.0;
+					}
+				}
+				else {
+					// КПРплан = 0, ПРПЗ <> 0
+					$E_kr = (!$E_prpz
+						? null
+						: 1.0 + (1.0 - $E_frfz / $E_prpz) * $krp);
+				}
+			}
+			else {
+				// КПРплан > 0
+				if(!$E_prpz) {
+					// КПРплан > 0, ПРПЗ = 0
+					$E_ks = ($E_kpr_fact / $E_kpr_plan);
+					if($E_kpr_fact && !$E_frfz) {
+						$E_kr = 1.0;
+					}
+					else {
+						$E_kr = 0.0;
+					}
+				}
+				else {
+					if(!$E_kpr_fact) {
+						// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0
+						$E_ks = 0.0;
+						if(!$E_frfz) {
+							// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0, ФРФЗ = 0
+							$E_kr = 1.0;
+						}
+						else {
+							// КПРплан > 0, ПРПЗ > 0, КПРфакт = 0, ФРФЗ > 0
+							$E_kr = 0.0;
+						}
+					}
+					else {
+						// КПРплан > 0, ПРПЗ > 0, КПРплан <> 0
+						$E_ks = $E_prfz / $E_prpz * $E_kd;
+						$E_kr = (!$E_prfz && !$E_frfz
+							? 1.0
+							: (!$E_prfz
+								? null
+								: 1.0 + (1.0 - $E_frfz / $E_prfz) * $krp));
+					}
+				}
+			}
 
-            // Кр
-            $E_kr = (is_null($E_frfz) || is_null($E_kpr_fact)
+			// Эфф
+			$E_eff = (is_null($E_ks) || is_null($E_kr))
 				? null
-					: (!$E_prfz && !$E_frfz
-						? 1.0
-						: (!$E_prfz
-		                	? null
-		                	: 1 + (1 - $E_frfz / $E_prfz) * $this->krp)));
-
-            // Эфф
-            $E_eff = (is_null($E_ks) || is_null($E_kr))
-                ? null
-                : $E_ks * $E_kr;
+				: $E_ks * $E_kr;
 
             // запоминаю суммарные
             $ms->sum_kpr_plan = $E_kpr_plan;
@@ -265,7 +311,7 @@ class Task extends \Pem\Models\BaseObject
 
             // прогнозные показатели (forecast)
             $ms->frc_fd = ($E_ks ? $this->pd / $E_ks : 0.0);
-            $ms->frc_frfz = $this->prpz * (1 - ($E_kr - 1) / $this->krp);
+            $ms->frc_frfz = $this->prpz * (1 - ($E_kr - 1) / $krp);
             $ms->frc_pr = $this->ppr * $E_kr;
             $ms->frc_pre = $this->ppr * $E_eff;
 
