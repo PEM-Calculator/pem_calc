@@ -350,7 +350,7 @@ module.exports = React.createClass({
                                     </div>
                                     <div className="row">
                                         <div className="col-sm-8 col-md-8 left hide-text">
-                                            Прогноз (+перерасход / -экономии)
+                                            Прогноз (+перерасход / -экономия)
                                         </div>
                                         <div className="col-sm-4 col-md-4 right">
                                             { Tools.formatNum((result.frc_frfz - goals.prpz.value).toFixed(2)) }
