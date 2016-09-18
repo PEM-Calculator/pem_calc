@@ -368,6 +368,10 @@ module.exports = React.createClass({
 				case 5: // year
 					period_text = pn.year
 					break
+
+				case 6: // plan-length
+					period_text = 'Плановый период'
+					break
 			}
 
 			if(pre_period_text !== null && last_pre_period_text === null) {
@@ -409,7 +413,9 @@ module.exports = React.createClass({
 				last_pre_period_key = key
 			}
 
+			//
 			// Показатели КПР ПЛАН
+			//
 			let kpr_plan = (period.kpr !== null && period.kpr.value !== null ? period.kpr.value : null),
 				kpr_plan_percent = (kpr_plan !== null ? 100 / goals.kpr.value * kpr_plan : null)
 			// E
@@ -419,7 +425,7 @@ module.exports = React.createClass({
 			}
 
 			kpr_plan_td.push(
-				<div key={key} className="period-item center middle middle-value">
+				<div key={key} className={ 'period-item center middle middle-value' + (kpr_plan === 0 ? ' gray' : '') }>
 					{this.isEditPlan
 						? <input type="number" defaultValue={kpr_plan}/>
 					: (kpr_plan !== null ? Tools.formatNum(kpr_plan.toFixed(2)) : '-')}
@@ -427,12 +433,14 @@ module.exports = React.createClass({
 			)
 
 			kpr_plan_percent_td.push(
-				<div key={key} className="period-item center middle">
-					{kpr_plan_percent !== null ? kpr_plan_percent.toFixed(1) + '%' : '-'}
+				<div key={key} className={ 'period-item center middle' + (kpr_plan_percent === 0 ? ' gray' : '') }>
+					{ kpr_plan_percent === null ? '-' : kpr_plan_percent.toFixed(1) + '%' }
 				</div>
 			)
 
+			//
 			// Показатели ПРПЗ
+			//
 			let prpz = (period.prpz !== null && period.prpz.value !== null ? period.prpz.value : null),
 				prpz_percent = (prpz !== null ? 100 / goals.prpz.value * prpz : null)
 			// E
@@ -442,7 +450,7 @@ module.exports = React.createClass({
 			}
 
 			prpz_td.push(
-				<div key={key} className="period-item center middle middle-value">
+				<div key={key} className={ 'period-item center middle middle-value' + (prpz === 0 ? ' gray' : '') }>
 					{this.isEditPlan
 						? <input type="number" defaultValue={prpz}/>
 					: (prpz !== null ? Tools.formatNum(prpz.toFixed(2)) : '-')}
@@ -450,39 +458,43 @@ module.exports = React.createClass({
 			)
 
 			prpz_percent_td.push(
-				<div key={key} className="period-item center middle">
-					{prpz_percent !== null ? prpz_percent.toFixed(1) + '%' : '-'}
+				<div key={key} className={ 'period-item center middle' + (prpz_percent === 0 ? ' gray' : '') }>
+					{ prpz_percent === null ? '-' : prpz_percent.toFixed(1) + '%' }
 				</div>
 			)
 
+			//
 			// Показатели КПР ФАКТ
+			//
 			let kpr_fact = (period.kpr_fact !== null && period.kpr_fact.value !== null ? period.kpr_fact.value : null),
 				kpr_fact_percent = (kpr_fact !== null ? 100 / goals.kpr.value * kpr_fact : null)
 			if(kpr_fact) kpr_fact_sum += kpr_fact
 			if(kpr_fact_percent) kpr_fact_percent_sum += kpr_fact_percent
 
 			kpr_fact_td.push(
-				<div key={key} className="period-item center middle middle-value">
-					{this.isEditFact
+				<div key={key} className={ 'period-item center middle middle-value' + (kpr_fact === 0 ? ' gray' : '') }>
+					{ this.isEditFact
 						? <input type="number" defaultValue={kpr_fact}/>
-					: (kpr_fact !== null ? Tools.formatNum(kpr_fact.toFixed(2)) : '-')}
+						: (kpr_fact === null ? '-' : Tools.formatNum(kpr_fact.toFixed(2))) }
 				</div>
 			)
 
 			kpr_fact_percent_td.push(
-				<div key={key} className="period-item center middle">
-					{kpr_fact_percent !== null ? kpr_fact_percent.toFixed(1) + '%' : '-'}
+				<div key={key} className={ 'period-item center middle' + (kpr_fact_percent === 0 ? ' gray' : '') }>
+					{ kpr_fact_percent === null ? '-' : kpr_fact_percent.toFixed(1) + '%' }
 				</div>
 			)
 
+			//
 			// Показатели ФРФЗ
+			//
 			let frfz = (period.frfz !== null && period.frfz.value !== null ? period.frfz.value : null),
 				frfz_percent = (frfz !== null ? 100 / goals.prpz.value * frfz : null)
 			if(frfz) frfz_sum += frfz
 			if(frfz_percent) frfz_percent_sum += frfz_percent
 
 			frfz_td.push(
-				<div key={key} className="period-item center middle middle-value">
+				<div key={key} className={ 'period-item center middle middle-value' + (frfz === 0 ? ' gray' : '') }>
 					{this.isEditFact
 						? <input type="number" defaultValue={frfz}/>
 					: (frfz !== null ? Tools.formatNum(frfz.toFixed(2)) : '-')}
@@ -490,7 +502,7 @@ module.exports = React.createClass({
 			)
 
 			frfz_percent_td.push(
-				<div key={key} className="period-item center middle">
+				<div key={key} className={ 'period-item center middle' + (frfz_percent === 0 ? ' gray' : '') }>
 					{frfz_percent !== null ? frfz_percent.toFixed(1) + '%' : '-'}
 				</div>
 			)
@@ -504,40 +516,41 @@ module.exports = React.createClass({
 			}
 
 			if(result) {
+				let is_red = (!kpr_plan || !prpz)
 				//
 				// Показатели эффективности
 				//
 				eff_td.push(
-					<div key={key+'1'} className="period-item-half center middle">
+					<div key={key+'1'} className={ 'period-item-half center middle' + (is_red ? ' red' : '') }>
 						{ key > max_period_index ? '-' : Tools.formatShare(result.eff, result_method) }
 					</div>
 				)
 				eff_td.push(
-					<div key={key+'2'} className="period-item-half center middle">
+					<div key={key+'2'} className={ 'period-item-half center middle' + (result.sum_eff < 0 ? ' red' : '') }>
 						<b>
 							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_eff, result_method) }
 						</b>
 					</div>
 				)
 				ks_td.push(
-					<div key={key+'1'} className="period-item-half center middle">
+					<div key={key+'1'} className={ 'period-item-half center middle' + (is_red ? ' red' : '') }>
 						{ key > max_period_index ? '-' : Tools.formatShare(result.ks, result_method) }
 					</div>
 				)
 				ks_td.push(
-					<div key={key+'2'} className="period-item-half center middle">
+					<div key={key+'2'} className={ 'period-item-half center middle' + (result.sum_ks < 0 ? ' red' : '') }>
 						<b>
 							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_ks, result_method) }
 						</b>
 					</div>
 				)
 				kr_td.push(
-					<div key={key+'1'} className="period-item-half center middle">
+					<div key={key+'1'} className={ 'period-item-half center middle' + (is_red ? ' red' : '') }>
 						{ key > max_period_index ? '-' : Tools.formatShare(result.kr, result_method) }
 					</div>
 				)
 				kr_td.push(
-					<div key={key+'2'} className="period-item-half center middle">
+					<div key={key+'2'} className={ 'period-item-half center middle' + (result.sum_kr < 0 ? ' red' : '') }>
 						<b>
 							{ key > max_period_index ? '-' : Tools.formatShare(result.sum_kr, result_method) }
 						</b>
@@ -591,6 +604,10 @@ module.exports = React.createClass({
 
 				case 5: // year
 					period_text = pn.year
+					break
+
+				case 6: // plan-length
+					period_text = 'Плановый период'
 					break
 			}
 
@@ -1156,7 +1173,7 @@ module.exports = React.createClass({
 									<td style={ {padding: '40px 20px 20px 20px'} }>
 										<img src="/img/help02.png"/>
 									</td>
-									<td style={{padding: '20px'}} className="left top">
+									<td style={{padding: '50px 20px 0 0'}} className="left top">
 										История изменения эффективности по<br/>
 										результатам в интервалах и с<br/>
 										нарастанием за период (1-N), где N - это номер<br/>
@@ -1166,6 +1183,27 @@ module.exports = React.createClass({
 							</tbody>
 						</table>
 					</div>}
+				</div>
+
+				{/* Инструкции */}
+				<div>
+					<h3>Пояснения</h3>
+
+					<p>
+						В соответствии с настройками, длительность проекта разбивается на интервалы - периоды для планирования, по результатам которых будет рассчитываться эффективность выполнения как за каждый интервал, так и с нарастанием от планового начала проекта.
+					</p>
+
+					<p>
+						Введите плановые данные о результате и расходах на каждый интервал длительности проекта в раздел “План”, чтобы получилось в сумме по 100%. Информация в столбце “Итого” информирует о суммарном значении результата и расходов в процентах. Данные о фактическом выполнении результата и расходах введите в раздел “Факт”. Ввода данных возможен после нажатия кнопки “Изменить”. После введения обязательно нажмите кнопку “Сохранить”. (Кнопка “Изменить” при нажатии меняется на кнопку “Сохранить” и наоборот). Кнопка “Отмена” позволяет выключить режим изменения данных.
+					</p>
+
+					<p>
+						В случаях, когда с завершением последнего интервала плановой длительности деятельность не достигла 100% результата, предусмотрено внесение данных в сверхплановый период. Для этого требуется нажать кнопку “Изменить” в разделе “План” и спланировать выполнение работы в открывшемся сверхплановом интервале. Далее следует ввести фактические данные о выполнении.
+					</p>
+
+					<p>
+						<b>Важно(!)</b> Данные по плану, введенные в интервалах сверхпланового периода, не суммируются с данными за плановую длительность проекта. Планирование в интервалах сверх плана необходимо для оценки эффективности деятельности в этих интервалах после введения фактических данных за эти интервалы.
+					</p>
 				</div>
 			</div>
 		)

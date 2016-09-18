@@ -59,11 +59,31 @@ module.exports = React.createClass({
 		})
 	},
 
-	onStartDemo(event) {
+	onStartDemo1(event) {
+		console.log('Fire p==* [FormUnitsAndGoals.onStartDemo1]', this.state)
+		event.preventDefault()
+
+		Store.Actions.startDemo1(() => {
+			// обновляю данные
+			History.gotoMonitor()
+		})
+	},
+
+	onStartDemo2(event) {
+		console.log('Fire p==* [FormUnitsAndGoals.onStartDemo2]', this.state)
+		event.preventDefault()
+
+		Store.Actions.startDemo2(() => {
+			// обновляю данные
+			History.gotoMonitor()
+		})
+	},
+
+	onStartDemo3(event) {
 		console.log('Fire p==* [FormUnitsAndGoals.onStartDemo]', this.state)
 		event.preventDefault()
 
-		Store.Actions.startDemo(() => {
+		Store.Actions.startDemo3(() => {
 			// обновляю данные
 			History.gotoMonitor()
 		})
@@ -143,6 +163,9 @@ module.exports = React.createClass({
 	render() {
 		console.log('Fire p==* [FormUnitsAndGoals.render]', this.state)
 
+		// проверка на супер-режим
+		let is_super = (location.href.indexOf('?super') >= 0);
+
 		// обновляю заголовок
 		let title = (((this.state.db || {}).goals || {}).project_name || {}).value
 			|| '*Новый проект'
@@ -184,10 +207,18 @@ module.exports = React.createClass({
 					<Select ref="result_method" data={goals.result_method}/>
 
 					{/* кнопки сохранить, отмена, сбросить */}
-					<button type="submit" className="btn btn-primary">{this.state.db.config.isNew ? 'Создать задачу' : 'Сохранить изменения'}</button>
-					{ this.state.db.config.isNew && <button type="button" className="btn" onClick={ this.onStartDemo }>Заполнить демо</button> }
-					&nbsp;
-					{ !this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button> }
+					<div className="button-panel">
+						{/* Создать/сохранить */}
+						<button type="submit" className="btn btn-primary">{this.state.db.config.isNew ? 'Создать задачу' : 'Сохранить изменения'}</button>
+						{/* Заполнить демо */}
+						{ this.state.db.config.isNew && <button type="button" className="btn" onClick={ this.onStartDemo1 }>Заполнить демо</button>}
+						{/* Заполнить демо с прибылью */}
+						{ this.state.db.config.isNew &&	<button type="button" className="btn" onClick={ this.onStartDemo2 }>Заполнить демо с прибылью</button>}
+						{/* Заполнить демо с частными */}
+						{ is_super && <button type="button" className="btn" onClick={ this.onStartDemo3 }>Демо с частными случаями</button>}
+						{/* Сбросить настройки */}
+						{ !this.state.db.config.isNew && <button type="button" className="btn" onClick={this.onFormReset}>Сброс настроек</button> }
+					</div>
 				</form>
 				{this.props.children}
 			</div>

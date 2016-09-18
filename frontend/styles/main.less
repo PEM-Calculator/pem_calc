@@ -180,6 +180,10 @@ table.values-table {
 				width: @period-width - 1;
 				height: @period-middle-height;
 			}
+
+			&.gray {
+				color: silver;
+			}
 		}
 
 		div.period-item-half {
@@ -188,6 +192,10 @@ table.values-table {
 			border: 1px solid @white-form-border-color;
 			border-left: 0;
 			height: 100%;
+
+			&.red {
+				color: red;
+			}
 		}
 	}
 
@@ -455,4 +463,8 @@ table.table.period-table {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+}
+
+.button-panel button {
+	margin-right: 10px;
 }

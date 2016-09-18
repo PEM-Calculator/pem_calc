@@ -60,8 +60,8 @@ let Tools = {
 	// Метод считает количество периодов между датами
 	calcPlanCount: function(pn, po, plan_range) {
 		//console.log('Fire p==* [TOOLS.calcPlanCount]', pn, po, plan_range)
-		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(plan_range),
-				day_length = 24*3600*1000
+		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year', 'plan-length'].indexOf(plan_range),
+			day_length = 24*3600*1000
 
 		if(!pn || !po || type === -1 || pn > po)
 			return null
@@ -235,6 +235,10 @@ let Tools = {
 					}
 				}
 				break
+
+			case 6: // plan-length
+				periods.push({n: pn * day_length, o: po * day_length})
+				break
 		}
 
 		return periods
@@ -364,7 +368,7 @@ let Tools = {
 	// определяет финальную дату по периоду
 	getFinishOfPeriod(date_from, plan_range) {
 		//console.log('Fire p==* [TOOLS.getFinishOfPeriod]', date_from, plan_range)
-		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year'].indexOf(plan_range),
+		let type = ['day', 'week', 'month', 'quarter', 'half-year', 'year', 'plan-length'].indexOf(plan_range),
 			day_length = 24*60*60*1000
 
 		// получаю количество дней без секунд
@@ -410,6 +414,10 @@ let Tools = {
 			case 5: // year
 				add = (this.getYearDays(date.year) - date.year_day)
 				return (date_from + add) * day_length
+				break
+
+			case 6: // plan-length
+				return (date_from + 365) * day_length
 				break
 		}
 
