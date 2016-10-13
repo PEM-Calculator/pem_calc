@@ -269,7 +269,7 @@ module.exports = React.createClass({
                                     <div className="small hide-text">Истекло времени</div>
                                 </div>
                                 <div className="col-sm-6 col-md-6 value-block">
-                                    <div>{ result.sum_fd } дней</div>
+                                    <div>{ goals.pd.value } дней</div>
                                     <div className="small">{ days_percent.toFixed(2) + '%' }</div>
                                 </div>
                             </div>
