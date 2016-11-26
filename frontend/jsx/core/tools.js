@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
 // Regex выражения для тестирования и замены даты
 // dd-mm-yyyy, dd.mm.yyyy
-let dateRegex1 = /^(\d{2})[-\.](\d{2})[-\.](\d{4})$/
+let dateRegex1 = /^(\d{2})[-\.](\d{2})[-\.](\d{4})$/;
 // yyyy.mm.dd, yyyy-mm-dd
-let dateRegex2 = /^(\d{4})[-\.](\d{2})[-\.](\d{2})$/
+let dateRegex2 = /^(\d{4})[-\.](\d{2})[-\.](\d{2})$/;
 
 let Tools = {
 	month_names: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -423,10 +423,10 @@ let Tools = {
 
 		return false
 	},
-}
+};
 
-window.Tools = Tools
-module.exports = Tools
+window.Tools = Tools;
+module.exports = Tools;
 
 /*
 // Для тестирования правильного расчета периодов

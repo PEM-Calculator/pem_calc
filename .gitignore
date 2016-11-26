@@ -1,5 +1,6 @@
+.cache
 .idea
 .solutions
 .trash
-frontend/node_modules
-public
+node_modules/
+public/app/

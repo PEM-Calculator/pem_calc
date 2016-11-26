@@ -4,12 +4,19 @@
 
 AddDefaultCharset UTF-8
 php_value date.timezone Asia/Yekaterinburg
-
 RewriteEngine On
 
-# ��������� �� index.php ���� ������ ������������ � _url
-RewriteRule ^index.php$ index.php?_url=/ [QSA,L]
+# Эти папки должны выдавать то, что в них есть
+RewriteRule ^(app|static)/ - [QSA,L]
 
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
+# Редиректы на index.php тоже должны передаваться в _url
+#RewriteRule ^index.php$ index.php?_url=/ [QSA,L]
+
+# Редирект всего и вся
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(planfact|settings)/?$ index.php?_url=$1 [QSA,L]
+
+# Редирект API запросов
+RewriteRule ^api$ api.php [QSA,L]
+RewriteRule ^api/(.*)?$ api.php?_url=$1 [QSA,L]
