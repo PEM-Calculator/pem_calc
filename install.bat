@@ -7,6 +7,11 @@ php composer-setup.php
 php -r "unlink('composer-setup.php');"
 
 @echo.
-@echo 2) Npm install node_modules
+@echo 2) Composer install dependencies
+@echo.
+php composer.phar install
+
+@echo.
+@echo 3) Npm install dependencies
 @echo.
 npm install
